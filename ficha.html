@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propiedad en Mar del Plata — Rubinetti Propiedades</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primario: #8a4f70;
+    --primario-oscuro: #6d3d58;
+    --acento: #aa6d8f;
+    --tinta: #262525;
+    --fondo: #faf9f8;
+    --gris: #6f6a6d;
+    --linea: rgba(38,37,37,.14);
+    --display: 'Fraunces', serif;
+    --sans: 'Outfit', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--sans); background: var(--fondo); color: var(--tinta);
+    font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; width: 100%; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 500; letter-spacing: -0.01em; }
+  :focus-visible { outline: 2px solid var(--primario); outline-offset: 3px; }
+  body.modal-abierto { overflow: hidden; }
+
+  /* ---------- Nav ---------- */
+  nav { position: sticky; top: 0; z-index: 50; background: var(--fondo); box-shadow: 0 1px 0 var(--linea); }
+  .nav-utilitaria { border-bottom: 1px solid var(--linea); }
+  .nav-utilitaria-inner {
+    max-width: 1180px; margin: 0 auto; padding: 9px 24px;
+    display: flex; align-items: center; justify-content: flex-end; gap: 22px;
+    color: var(--gris); font-size: 13px;
+  }
+  .nav-contacto { display: flex; align-items: center; gap: 20px; }
+  .nav-contacto a { display: flex; align-items: center; gap: 6px; }
+  .nav-contacto a:hover { color: var(--tinta); }
+  .nav-contacto svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .nav-redes { display: flex; align-items: center; gap: 12px; }
+  .nav-redes a { display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--linea); }
+  .nav-redes a:hover { background: rgba(138,79,112,.08); border-color: var(--acento); }
+  .nav-redes svg { width: 13px; height: 13px; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; max-width: 1180px; margin: 0 auto; }
+  .logo img { height: 48px; width: auto; display: block; }
+  .nav-links { display: flex; gap: 30px; font-size: 15px; font-weight: 500; }
+  .nav-links a { position: relative; padding-bottom: 3px; transition: color .2s; }
+  .nav-links a::after {
+    content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 1.5px;
+    background: var(--acento); transform: scaleX(0); transform-origin: center; transition: transform .25s ease;
+  }
+  .nav-links a:hover { color: var(--acento); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  @media (max-width: 720px) { .nav-links, .nav-utilitaria { display: none; } .logo img { height: 34px; } }
+
+  /* ---------- Breadcrumb + acciones ---------- */
+  .migas { padding: 18px 0 0; font-size: 13px; color: var(--gris); }
+  .migas a:hover { color: var(--acento); }
+  .ficha-acciones {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    padding: 10px 0 18px;
+  }
+  .btn-accion {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13.5px; font-weight: 600; color: var(--tinta);
+    background: #fff; border: 1px solid var(--linea); border-radius: 999px;
+    padding: 8px 16px; cursor: pointer; transition: border-color .15s, color .15s;
+  }
+  .btn-accion:hover { border-color: var(--acento); color: var(--acento); }
+  .btn-accion svg { width: 15px; height: 15px; }
+  .acciones-derecha { display: flex; gap: 10px; }
+
+  /* ---------- Título + precio ---------- */
+  .ficha-titulo { padding-bottom: 20px; }
+  .ficha-titulo h1 { font-size: clamp(22px, 2.8vw, 30px); }
+  .ficha-titulo .dir-secundaria { margin-top: 4px; font-size: 14.5px; color: var(--gris); }
+  .ficha-precio-fila { display: flex; align-items: center; gap: 14px; margin-top: 14px; flex-wrap: wrap; }
+  .tag-op {
+    background: var(--tinta); color: #fff; font-size: 11.5px; font-weight: 600;
+    letter-spacing: .07em; text-transform: uppercase; padding: 5px 12px; border-radius: 4px;
+  }
+  .ficha-precio { font-size: 26px; font-weight: 600; letter-spacing: -0.01em; }
+  .ficha-precio small { font-size: 14px; font-weight: 400; color: var(--gris); }
+  .ficha-ref { font-size: 12.5px; color: rgba(38,37,37,.45); margin-left: auto; }
+
+  /* ---------- Galería ---------- */
+  .galeria { padding: 8px 0 40px; }
+  .galeria-principal {
+    aspect-ratio: 16 / 10; background: #e9e6e0; border-radius: 10px; overflow: hidden;
+    position: relative; margin-bottom: 10px;
+  }
+  .galeria-principal img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .galeria-principal.sin-foto {
+    display: flex; align-items: center; justify-content: center;
+    background: #ece9e4; color: rgba(38,37,37,.4); font-size: 14px;
+  }
+  .btn-ver-video {
+    position: absolute; bottom: 16px; left: 16px;
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(0,0,0,.6); color: #fff; font-size: 13.5px; font-weight: 600;
+    padding: 9px 16px; border-radius: 999px; border: none; cursor: pointer;
+    backdrop-filter: blur(3px);
+  }
+  .btn-ver-video:hover { background: rgba(0,0,0,.75); }
+  .btn-ver-video svg { width: 16px; height: 16px; }
+  .galeria-contador {
+    position: absolute; bottom: 16px; right: 16px;
+    background: rgba(0,0,0,.55); color: #fff; font-size: 12.5px; font-weight: 500;
+    padding: 5px 11px; border-radius: 999px;
+  }
+  .galeria-miniaturas {
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px;
+  }
+  .galeria-miniaturas button {
+    aspect-ratio: 4/3; border-radius: 6px; overflow: hidden; border: 2px solid transparent;
+    padding: 0; cursor: pointer; background: #e9e6e0;
+  }
+  .galeria-miniaturas button.activa { border-color: var(--acento); }
+  .galeria-miniaturas img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (max-width: 720px) { .galeria-miniaturas { grid-template-columns: repeat(4, 1fr); } }
+
+  /* ---------- Layout principal: contenido + sidebar de contacto ---------- */
+  .layout-ficha { display: grid; grid-template-columns: 1fr 340px; gap: 40px; align-items: start; padding-bottom: 64px; }
+
+  /* ---------- Datos rápidos ---------- */
+  .datos-rapidos {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    background: #fff; border: 1px solid var(--linea); border-radius: 10px; overflow: hidden;
+    margin-bottom: 36px;
+  }
+  .dato-rapido {
+    padding: 18px 16px; border-right: 1px solid var(--linea); border-bottom: 1px solid var(--linea);
+    text-align: center;
+  }
+  .dato-rapido:nth-child(4n) { border-right: none; }
+  .dato-rapido .valor { font-size: 19px; font-weight: 600; }
+  .dato-rapido .etiqueta { font-size: 11.5px; color: var(--gris); margin-top: 3px; text-transform: uppercase; letter-spacing: .04em; }
+  @media (max-width: 640px) {
+    .datos-rapidos { grid-template-columns: repeat(2, 1fr); }
+    .dato-rapido:nth-child(2n) { border-right: none; }
+  }
+
+  /* ---------- Secciones de contenido ---------- */
+  .seccion-ficha { margin-bottom: 36px; }
+  .seccion-ficha h2 { font-size: 19px; margin-bottom: 14px; }
+  .descripcion-texto { font-size: 15px; color: var(--tinta); line-height: 1.75; max-width: 68ch; }
+  .lista-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 24px; }
+  .lista-info .fila { display: flex; justify-content: space-between; font-size: 14.5px; padding: 9px 0; border-bottom: 1px solid var(--linea); }
+  .lista-info .fila span:first-child { color: var(--gris); }
+  .lista-info .fila span:last-child { font-weight: 500; }
+  .chips-caracteristicas { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip-caracteristica {
+    display: flex; align-items: center; gap: 7px;
+    background: #fff; border: 1px solid var(--linea); border-radius: 999px;
+    padding: 8px 16px; font-size: 13.5px;
+  }
+  .chip-caracteristica svg { width: 15px; height: 15px; color: var(--acento); }
+  .mapa-placeholder {
+    aspect-ratio: 16/7; background: repeating-linear-gradient(45deg, #e3e0d8 0 2px, #dbd8cf 2px 60px);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: rgba(38,37,37,.4);
+  }
+
+  /* ---------- Sidebar contacto ---------- */
+  .sidebar-contacto { position: sticky; top: 78px; }
+  .card-contacto { background: #fff; border: 1px solid var(--linea); border-radius: 10px; padding: 22px; }
+  .card-contacto h3 { font-size: 16px; margin-bottom: 4px; }
+  .card-contacto .sub { font-size: 13px; color: var(--gris); margin-bottom: 18px; }
+  .btn-whatsapp-ficha {
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    background: #25d366; color: #fff; font-weight: 700; font-size: 14.5px;
+    padding: 13px; border-radius: 8px; margin-bottom: 12px;
+  }
+  .btn-whatsapp-ficha:hover { background: #1ebc59; }
+  .btn-whatsapp-ficha svg { width: 18px; height: 18px; }
+  .campo { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+  .campo label { font-size: 12.5px; font-weight: 500; color: var(--gris); }
+  .campo input, .campo textarea {
+    font-family: var(--sans); font-size: 14.5px; color: var(--tinta);
+    border: 1px solid var(--linea); border-radius: 6px; padding: 10px 11px; background: #fff; resize: vertical;
+  }
+  .campo input:focus, .campo textarea:focus { outline: none; border-color: var(--acento); box-shadow: 0 0 0 3px rgba(170,109,143,.14); }
+  .btn-enviar-ficha {
+    width: 100%; font-family: var(--sans); font-size: 14.5px; font-weight: 600;
+    background: var(--primario); color: #fff; border: none; border-radius: 8px;
+    padding: 12px; cursor: pointer; transition: background .15s;
+  }
+  .btn-enviar-ficha:hover { background: var(--primario-oscuro); }
+  .card-oficina { margin-top: 16px; font-size: 13px; color: var(--gris); text-align: center; }
+
+  /* ---------- Puede interesarte ---------- */
+  .similares-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .prop {
+    display: block; background: #fff; border: 1px solid var(--linea); border-radius: 10px; overflow: hidden;
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  }
+  .prop:hover { transform: translateY(-5px); box-shadow: 0 16px 32px rgba(38,37,37,.16); border-color: var(--acento); }
+  .prop-foto { aspect-ratio: 4/3; background: #e9e6e0; position: relative; overflow: hidden; }
+  .prop-foto img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s ease; }
+  .prop:hover .prop-foto img { transform: scale(1.06); }
+  .prop-op { position: absolute; top: 10px; left: 10px; background: rgba(38,37,37,.85); color: #fff; font-size: 10.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; padding: 4px 9px; border-radius: 3px; }
+  .prop-body { padding: 15px; }
+  .prop-dir-mini { font-size: 14.5px; font-weight: 600; }
+  .prop-sub-mini { margin-top: 2px; font-size: 12.5px; color: var(--gris); }
+  .prop-precio-mini { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--linea); font-size: 16px; font-weight: 600; }
+  @media (max-width: 980px) {
+    .layout-ficha { grid-template-columns: 1fr; }
+    .sidebar-contacto { position: static; }
+    .similares-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) { .similares-grid { grid-template-columns: 1fr; } .lista-info { grid-template-columns: 1fr; } }
+
+  /* ---------- Modal de video ---------- */
+  .modal-video-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(20,18,19,.86);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+  }
+  .modal-video-overlay.visible { opacity: 1; pointer-events: auto; }
+  .modal-video-caja { width: 100%; max-width: 920px; }
+  .modal-video-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px; color: #fff;
+  }
+  .modal-video-header span { font-size: 14px; font-weight: 500; letter-spacing: .02em; }
+  .modal-video-cerrar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.3);
+    color: #fff; font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s;
+  }
+  .modal-video-cerrar:hover { background: rgba(255,255,255,.22); }
+  .modal-video-frame { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 8px; overflow: hidden; }
+  .modal-video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+  /* ---------- WhatsApp flotante + footer ---------- */
+  .whatsapp-flotante {
+    position: fixed; right: 22px; bottom: 22px; z-index: 60;
+    width: 58px; height: 58px; border-radius: 50%; background: #25d366;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,.28); transition: transform .15s, box-shadow .15s;
+  }
+  .whatsapp-flotante:hover { transform: scale(1.07); box-shadow: 0 8px 26px rgba(0,0,0,.34); }
+  .whatsapp-flotante svg { width: 30px; height: 30px; }
+
+  footer { background: var(--acento); color: rgba(255,255,255,.9); padding: 56px 0 30px; font-size: 14px; scroll-snap-align: end; }
+  .footer-top { display: flex; align-items: center; gap: 14px; margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,.25); }
+  .footer-logo-placa {
+    display: inline-flex; align-items: center;
+    background: rgba(250,249,248,.95);
+    border-radius: 10px;
+    padding: 10px 16px;
+  }
+  .footer-top img { height: 38px; display: block; }
+  .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  .footer-grid h4 { color: #fff; font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 14px; }
+  .footer-grid a { display: block; padding: 4px 0; color: rgba(255,255,255,.85); }
+  .footer-grid a:hover { color: #fff; text-decoration: underline; }
+  .footer-grid p { color: rgba(255,255,255,.85); }
+  .footer-legal { margin-top: 40px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.25); font-size: 12px; color: rgba(255,255,255,.65); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .footer-disclaimer { font-size: 11.5px; color: rgba(255,255,255,.6); margin-top: 28px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.25); max-width: 90ch; line-height: 1.6; }
+  @media (max-width: 820px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav aria-label="Principal">
+  <div class="nav-utilitaria">
+    <div class="nav-utilitaria-inner">
+      <div class="nav-contacto">
+        <a href="tel:+542235456335">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +54 223 545-6335
+        </a>
+        <a href="mailto:info@rubinettipropiedades.com.ar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6l-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+          info@rubinettipropiedades.com.ar
+        </a>
+      </div>
+      <div class="nav-redes">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-inner">
+    <a class="logo" href="index.html" aria-label="Rubinetti Propiedades — inicio">
+      <img src="logo-rubinetti-horizontal.png" alt="Rubinetti Propiedades">
+    </a>
+    <div class="nav-links">
+      <a href="listado.html?operacion=venta">Venta</a>
+      <a href="listado.html?operacion=alquiler">Alquiler</a>
+      <a href="index.html#inmobiliaria">Sobre Nosotros</a>
+      <a href="tasaciones.html">Tasaciones</a>
+      <a href="index.html#contacto">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap migas">
+  <a href="index.html">Inicio</a> &nbsp;›&nbsp;
+  <a href="listado.html?operacion=venta" id="miga-operacion">Venta</a> &nbsp;›&nbsp;
+  <span id="miga-barrio">Barrio</span> &nbsp;›&nbsp;
+  <span id="miga-direccion">Dirección</span>
+</div>
+
+<div class="wrap ficha-acciones">
+  <button class="btn-accion" id="btn-volver" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Volver a resultados
+  </button>
+  <div class="acciones-derecha">
+    <button class="btn-accion" id="btn-favorito" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C.7 9.2 2 5.5 5.5 4.6 8 4 10 5 12 7c2-2 4-3 6.5-2.4 3.5.9 4.8 4.6 3 7.9C19 16.65 12 21 12 21z"/></svg>
+      Guardar
+    </button>
+    <button class="btn-accion" id="btn-abrir-video" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+      Ver video
+    </button>
+  </div>
+</div>
+
+<div class="wrap ficha-titulo">
+  <h1 id="titulo-tipo">Departamento en Venta en Plaza Mitre</h1>
+  <p class="dir-secundaria" id="titulo-dir">Rawson al 4500, Mar del Plata</p>
+  <div class="ficha-precio-fila">
+    <span class="tag-op" id="tag-operacion">Venta</span>
+    <span class="ficha-precio" id="ficha-precio">USD 45.000</span>
+    <span class="ficha-ref" id="ficha-ref">REF. 1001</span>
+  </div>
+</div>
+
+<div class="wrap galeria">
+  <div class="galeria-principal" id="galeria-principal">
+    <img id="foto-principal" src="" alt="">
+    <button class="btn-ver-video" id="btn-ver-video-galeria" type="button">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      Ver video
+    </button>
+    <span class="galeria-contador" id="galeria-contador">1 / 6</span>
+  </div>
+  <div class="galeria-miniaturas" id="galeria-miniaturas"></div>
+</div>
+
+<div class="wrap layout-ficha">
+  <div class="contenido-ficha">
+
+    <div class="datos-rapidos" id="datos-rapidos"></div>
+
+    <div class="seccion-ficha">
+      <h2>Descripción</h2>
+      <p class="descripcion-texto" id="descripcion-texto"></p>
+    </div>
+
+    <div class="seccion-ficha">
+      <h2>Información básica</h2>
+      <div class="lista-info" id="lista-info-basica"></div>
+    </div>
+
+    <div class="seccion-ficha">
+      <h2>Características</h2>
+      <div class="chips-caracteristicas" id="chips-caracteristicas"></div>
+    </div>
+
+    <div class="seccion-ficha">
+      <h2>Ubicación</h2>
+      <div class="mapa-placeholder" id="mapa-placeholder">Mapa · Barrio</div>
+    </div>
+
+  </div>
+
+  <aside class="sidebar-contacto">
+    <div class="card-contacto">
+      <h3>¿Te interesa esta propiedad?</h3>
+      <p class="sub">Respondemos por WhatsApp o por este formulario, lo que prefieras.</p>
+      <a class="btn-whatsapp-ficha" id="link-whatsapp-ficha" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.47 14.38c-.28-.14-1.67-.82-1.93-.92-.26-.1-.45-.14-.64.14-.19.28-.74.92-.9 1.1-.17.19-.33.21-.61.07-.28-.14-1.18-.43-2.25-1.38-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.33.42-.5.14-.16.19-.28.28-.47.09-.19.05-.35-.02-.5-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49-.17-.01-.36-.01-.55-.01-.19 0-.5.07-.76.35-.26.28-1 .98-1 2.39s1.02 2.77 1.16 2.96c.14.19 2.01 3.07 4.87 4.3.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.11.55-.08 1.67-.68 1.9-1.34.24-.65.24-1.21.17-1.33-.07-.12-.26-.19-.54-.33z"/><path d="M12 2a10 10 0 0 0-8.5 15.24L2 22l4.9-1.47A10 10 0 1 0 12 2zm0 18.18a8.15 8.15 0 0 1-4.16-1.14l-.3-.18-3.09.92.94-3.01-.2-.31A8.18 8.18 0 1 1 12 20.18z"/></svg>
+        Consultar por WhatsApp
+      </a>
+      <form id="form-ficha">
+        <div class="campo"><label for="fc-nombre">Nombre</label><input id="fc-nombre" type="text" required></div>
+        <div class="campo"><label for="fc-telefono">Teléfono</label><input id="fc-telefono" type="tel"></div>
+        <div class="campo"><label for="fc-mensaje">Mensaje</label><textarea id="fc-mensaje" rows="3" required></textarea></div>
+        <button type="submit" class="btn-enviar-ficha">Enviar consulta</button>
+      </form>
+      <p class="card-oficina">Av. Rivadavia 3850 · Lun a vie de 9 a 18 h</p>
+    </div>
+  </aside>
+</div>
+
+<div class="wrap">
+  <div class="seccion-ficha">
+    <div class="seccion-head" style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px;">
+      <h2>Puede interesarte</h2>
+    </div>
+    <div class="similares-grid" id="similares-grid"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL DE VIDEO: se abre automáticamente al entrar a la ficha
+     (si la propiedad tiene video cargado), con overlay gris atrás.
+     Recién al cerrarlo el usuario puede ver/scrollear el resto.
+     ============================================================ -->
+<div class="modal-video-overlay" id="modal-video">
+  <div class="modal-video-caja">
+    <div class="modal-video-header">
+      <span id="modal-video-titulo">Video de la propiedad</span>
+      <button class="modal-video-cerrar" id="btn-cerrar-video" aria-label="Cerrar video">✕</button>
+    </div>
+    <div class="modal-video-frame">
+      <iframe id="modal-video-iframe" src="" title="Video de la propiedad" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<a class="whatsapp-flotante" href="https://wa.me/5492235456335" aria-label="Escribinos por WhatsApp" target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.47 14.38c-.28-.14-1.67-.82-1.93-.92-.26-.1-.45-.14-.64.14-.19.28-.74.92-.9 1.1-.17.19-.33.21-.61.07-.28-.14-1.18-.43-2.25-1.38-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.33.42-.5.14-.16.19-.28.28-.47.09-.19.05-.35-.02-.5-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49-.17-.01-.36-.01-.55-.01-.19 0-.5.07-.76.35-.26.28-1 .98-1 2.39s1.02 2.77 1.16 2.96c.14.19 2.01 3.07 4.87 4.3.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.11.55-.08 1.67-.68 1.9-1.34.24-.65.24-1.21.17-1.33-.07-.12-.26-.19-.54-.33z"/><path d="M12 2a10 10 0 0 0-8.5 15.24L2 22l4.9-1.47A10 10 0 1 0 12 2zm0 18.18a8.15 8.15 0 0 1-4.16-1.14l-.3-.18-3.09.92.94-3.01-.2-.31A8.18 8.18 0 1 1 12 20.18z"/></svg>
+</a>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top"><span class="footer-logo-placa"><img src="logo-rubinetti-horizontal.png" alt="Rubinetti Propiedades"></span></div>
+    <div class="footer-grid">
+      <div>
+        <h4>Rubinetti Propiedades</h4>
+        <p>Av. Rivadavia 3850<br>Mar del Plata, Argentina<br>Lunes a viernes de 9 a 18 h</p>
+      </div>
+      <div>
+        <h4>La inmobiliaria</h4>
+        <a href="index.html#inmobiliaria">Sobre Nosotros</a>
+        <a href="index.html#contacto">Contacto</a>
+        <a href="tasaciones.html">Tasaciones</a>
+      </div>
+      <div>
+        <h4>Propiedades</h4>
+        <a href="listado.html?operacion=venta">En venta</a>
+        <a href="listado.html?operacion=alquiler">En alquiler</a>
+        <a href="listado.html?operacion=venta&tipo=Departamento">Departamentos</a>
+        <a href="listado.html?operacion=venta&tipo=Casa">Casas</a>
+        <a href="listado.html?operacion=venta&tipo=PH">PH</a>
+        <a href="listado.html?operacion=venta&tipo=Lote">Lotes</a>
+      </div>
+      <div>
+        <h4>Contacto directo</h4>
+        <a href="https://wa.me/5492235456335" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="#">Instagram</a>
+        <a href="tel:+542235456335">+54 223 545-6335</a>
+        <a href="mailto:info@rubinettipropiedades.com.ar">Email</a>
+      </div>
+    </div>
+    <p class="footer-disclaimer">Las medidas, superficies y demás datos enunciados son meramente orientativos; las medidas exactas serán las que consten en el respectivo título de propiedad de cada inmueble. Todas las fotos e imágenes son ilustrativas y no contractuales. Los precios enunciados no son vinculantes y están sujetos a confirmación.</p>
+    <div class="footer-legal">
+      <span>© 2026 Rubinetti Propiedades · Corredores públicos Mat. XXXX</span>
+      <span>Mar del Plata, Argentina</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* =====================================================================
+   DEMO: en producción esto es una consulta a /api/propiedades/:id que
+   trae la propiedad con sus imágenes (PropertyImage ordenadas por
+   position), sus Amenity, y las "similares" por barrio/tipo/rango de
+   precio. Acá se simula con un array en memoria.
+   ===================================================================== */
+const IMG = (nombre) => `https://commons.wikimedia.org/wiki/Special:FilePath/${nombre}?width=1200`;
+
+/* =====================================================================
+   Misma fuente de datos que listado.html (a propósito: en producción
+   ambas páginas leen la misma tabla Property, acá se duplica el array
+   porque son archivos estáticos sin backend compartido). A partir de
+   estos campos base se derivan los que solo usa la ficha (dormitorios,
+   baños, superficies desglosadas, disposición, descripción).
+   ===================================================================== */
+const PROPIEDADES_BASE = [
+  { id:1, op:'Venta', tipo:'Departamento', barrio:'Plaza Mitre', dir:'Rawson al 4500', precio:45000, moneda:'USD', ambientes:2, m2:52, estado:'Muy bueno', amenities:['Cochera'], fotos:6 },
+  { id:2, op:'Venta', tipo:'Casa', barrio:'Güemes', dir:'Alberti al 1200', precio:72000, moneda:'USD', ambientes:3, m2:78, estado:'Excelente', amenities:['Balcón','Patio'], fotos:8 },
+  { id:3, op:'Alquiler', tipo:'Departamento', barrio:'Centro', dir:'San Luis al 2300', precio:480000, moneda:'ARS', ambientes:1, m2:34, estado:'Bueno', amenities:[], fotos:5 },
+  { id:4, op:'Venta', tipo:'Departamento', barrio:'Centro', dir:'Belgrano al 2800', precio:58000, moneda:'USD', ambientes:2, m2:48, estado:'Bueno', amenities:['Balcón'], fotos:2 },
+  { id:5, op:'Venta', tipo:'Casa', barrio:'La Perla', dir:'Colón al 3500', precio:94000, moneda:'USD', ambientes:3, m2:85, estado:'Excelente', amenities:['Vista al mar','Cochera'], fotos:9 },
+  { id:6, op:'Alquiler', tipo:'Departamento', barrio:'Güemes', dir:'Güemes al 900', precio:620000, moneda:'ARS', ambientes:2, m2:60, estado:'Muy bueno', amenities:['Amoblado'], fotos:4 },
+  { id:7, op:'Venta', tipo:'Departamento', barrio:'Puerto', dir:'Falucho al 1400', precio:31000, moneda:'USD', ambientes:1, m2:38, estado:'Bueno', amenities:['Cochera'], fotos:1 },
+  { id:8, op:'Venta', tipo:'Casa', barrio:'Centro', dir:'Bernardo de Irigoyen al 400', precio:110000, moneda:'USD', ambientes:4, m2:120, estado:'Excelente', amenities:['Cochera','Patio'], fotos:7 },
+  { id:9, op:'Venta', tipo:'PH', barrio:'San Juan', dir:'San Juan al 2100', precio:63000, moneda:'USD', ambientes:3, m2:70, estado:'Bueno', amenities:['Patio'], fotos:0 },
+  { id:10, op:'Alquiler', tipo:'Departamento', barrio:'Plaza Mitre', dir:'Rawson al 4300', precio:390000, moneda:'ARS', ambientes:1, m2:32, estado:'Muy bueno', amenities:[], fotos:3 },
+  { id:11, op:'Venta', tipo:'Lote', barrio:'Constitución', dir:'Rizzuto al 600', precio:22000, moneda:'USD', ambientes:null, m2:300, estado:null, amenities:[], fotos:1 },
+  { id:12, op:'Venta', tipo:'Cochera', barrio:'Centro', dir:'San Martín al 3000', precio:8500, moneda:'USD', ambientes:null, m2:14, estado:null, amenities:[], fotos:1 },
+  { id:13, op:'Alquiler', tipo:'Casa', barrio:'La Perla', dir:'Vértiz al 1800', precio:850000, moneda:'ARS', ambientes:4, m2:140, estado:'Muy bueno', amenities:['Patio','Cochera'], fotos:6 },
+  { id:14, op:'Venta', tipo:'Departamento', barrio:'Güemes', dir:'Alberti al 1500', precio:null, moneda:'USD', ambientes:2, m2:55, estado:'A refaccionar', amenities:[], fotos:2 },
+  { id:15, op:'Venta', tipo:'Local comercial', barrio:'Centro', dir:'Rivadavia al 2000', precio:135000, moneda:'USD', ambientes:null, m2:90, estado:'Bueno', amenities:['Apto crédito'], fotos:5 },
+  { id:16, op:'Alquiler', tipo:'Departamento', barrio:'Centro', dir:'Corrientes al 1900', precio:410000, moneda:'ARS', ambientes:2, m2:50, estado:'Bueno', amenities:[], fotos:0 },
+  { id:17, op:'Venta', tipo:'Casa', barrio:'San Juan', dir:'Juan B. Justo al 3200', precio:88000, moneda:'USD', ambientes:3, m2:95, estado:'Muy bueno', amenities:['Cochera'], fotos:4 },
+  { id:18, op:'Venta', tipo:'Departamento', barrio:'Plaza Mitre', dir:'Rawson al 4700', precio:39500, moneda:'USD', ambientes:2, m2:45, estado:'Bueno', amenities:[], fotos:1 },
+  { id:19, op:'Alquiler', tipo:'PH', barrio:'Puerto', dir:'Génova al 800', precio:340000, moneda:'ARS', ambientes:2, m2:52, estado:'Muy bueno', amenities:['Patio'], fotos:3 },
+  { id:20, op:'Venta', tipo:'Departamento', barrio:'Centro', dir:'Moreno al 2600', precio:51000, moneda:'USD', ambientes:2, m2:50, estado:'Excelente', amenities:['Cochera'], fotos:5 },
+  { id:21, op:'Venta', tipo:'Casa', barrio:'Constitución', dir:'Champagnat al 1100', precio:76000, moneda:'USD', ambientes:3, m2:82, estado:'Bueno', amenities:['Patio'], fotos:2 },
+  { id:22, op:'Alquiler', tipo:'Departamento', barrio:'Güemes', dir:'Formosa al 700', precio:520000, moneda:'ARS', ambientes:2, m2:58, estado:'Muy bueno', amenities:['Balcón'], fotos:1 },
+  { id:23, op:'Venta', tipo:'Departamento', barrio:'La Perla', dir:'Alem al 3300', precio:99000, moneda:'USD', ambientes:3, m2:80, estado:'Excelente', amenities:['Vista al mar'], fotos:0 },
+  { id:24, op:'Venta', tipo:'PH', barrio:'Centro', dir:'Entre Ríos al 2400', precio:67000, moneda:'USD', ambientes:3, m2:68, estado:'Bueno', amenities:['Patio'], fotos:6 },
+];
+
+const IMGS_CICLO = [IMG('Chalet%20calle%20Rawson.jpg'), IMG('Chalet%20calle%20Alberti.jpg'), IMG('Chalet%20al%20atardecer-2.jpg'), IMG('Barrio%20La%20Perla%20antiguo.jpg')];
+
+// Descripciones a mano para las dos propiedades "showcase"; el resto se
+// arma con una plantilla simple por tipo — suficiente para la demo, en
+// producción cada propiedad tiene su descripción propia cargada en el CMS.
+const DESCRIPCIONES_MANUALES = {
+  1: 'Departamento de dos ambientes al frente, con balcón y vista abierta. Living comedor integrado a la cocina, dormitorio en suite y cochera cubierta incluida en el precio. A metros de la Plaza Mitre y del acceso a la Peatonal San Martín.',
+  2: 'Casa de tres ambientes con patio propio, muy luminosa, a pocas cuadras del microcentro de Güemes. Cocina reciclada, dos dormitorios amplios y cochera para un auto.',
+};
+
+function generarDescripcion(b) {
+  if (DESCRIPCIONES_MANUALES[b.id]) return DESCRIPCIONES_MANUALES[b.id];
+  const amenitiesTxt = b.amenities.length ? ` Cuenta con ${b.amenities.join(', ').toLowerCase()}.` : '';
+  const plantillas = {
+    'Departamento': `${b.tipo} de ${b.ambientes} ambiente${b.ambientes > 1 ? 's' : ''} en ${b.barrio}, sobre ${b.dir}.${amenitiesTxt} A metros de comercios y transporte público.`,
+    'Casa': `Casa de ${b.ambientes} ambientes en ${b.barrio}, ubicada en ${b.dir}.${amenitiesTxt} Zona tranquila y residencial.`,
+    'PH': `PH de ${b.ambientes} ambientes en ${b.barrio}, sobre ${b.dir}.${amenitiesTxt} Buena luz natural y distribución funcional.`,
+    'Lote': `Lote de terreno de ${b.m2} m² en ${b.barrio}, sobre ${b.dir}. Apto para construir.`,
+    'Cochera': `Cochera cubierta en ${b.barrio}, sobre ${b.dir}. Ideal para un vehículo.`,
+    'Local comercial': `Local comercial de ${b.m2} m² en ${b.barrio}, sobre ${b.dir}.${amenitiesTxt}`,
+  };
+  return plantillas[b.tipo] || `${b.tipo} en ${b.barrio}, sobre ${b.dir}.`;
+}
+
+function construirFicha(b) {
+  const esResidencial = !!b.ambientes;
+  const dormitorios = esResidencial ? Math.max(1, b.ambientes - 1) : null;
+  const banos = esResidencial ? (b.ambientes >= 3 ? 2 : 1) : null;
+  const m2Total = b.m2;
+  const m2Cubierta = esResidencial ? Math.round(m2Total * 0.92) : m2Total;
+  const m2Semicubierta = esResidencial ? (m2Total - m2Cubierta) : 0;
+  const disposicion = esResidencial ? (b.id % 3 === 0 ? 'Interno' : b.id % 2 === 0 ? 'Contrafrente' : 'Frente') : null;
+  const aptoCredito = b.amenities.includes('Apto crédito') || (b.op === 'Venta' && b.moneda === 'USD' && b.precio && b.precio < 60000);
+  const fotos = Array.from({ length: b.fotos }, (_, i) => IMGS_CICLO[i % IMGS_CICLO.length]);
+  return {
+    ...b, dormitorios, banos, m2Cubierta, m2Semicubierta, m2Total, disposicion, aptoCredito,
+    fotos, ref: 1000 + b.id, descripcion: generarDescripcion(b),
+    videoId: b.id === 1 ? 'meAzO4IvYSU' : null, // solo la propiedad 1 tiene video cargado en esta demo
+  };
+}
+
+const PROPIEDADES = Object.fromEntries(PROPIEDADES_BASE.map(b => [b.id, construirFicha(b)]));
+
+function propiedadPorId(id) { return PROPIEDADES[id] || PROPIEDADES[1]; }
+
+const params = new URLSearchParams(location.search);
+const id = parseInt(params.get('id')) || 1;
+const p = propiedadPorId(id);
+
+function formatearPrecio(p) {
+  const monto = p.moneda === 'USD' ? `USD ${p.precio.toLocaleString('es-AR')}` : `$ ${p.precio.toLocaleString('es-AR')}`;
+  return p.op === 'Alquiler' ? `${monto} <small>por mes</small>` : monto;
+}
+
+// ---------- Título, breadcrumb, precio ----------
+document.getElementById('titulo-tipo').textContent = `${p.tipo} en ${p.op} en ${p.barrio}`;
+document.getElementById('titulo-dir').textContent = `${p.dir}, Mar del Plata`;
+document.getElementById('tag-operacion').textContent = p.op;
+document.getElementById('ficha-precio').innerHTML = formatearPrecio(p);
+document.getElementById('ficha-ref').textContent = `REF. ${p.ref}`;
+document.getElementById('miga-operacion').textContent = p.op;
+document.getElementById('miga-operacion').href = `listado.html?operacion=${p.op.toLowerCase()}`;
+document.getElementById('miga-barrio').textContent = p.barrio;
+document.getElementById('miga-direccion').textContent = p.dir;
+document.title = `${p.tipo} en ${p.op} en ${p.barrio} — Rubinetti Propiedades`;
+
+// ---------- Galería ----------
+let fotoActual = 0;
+function renderGaleria() {
+  const principal = document.getElementById('galeria-principal');
+  const img = document.getElementById('foto-principal');
+  const contador = document.getElementById('galeria-contador');
+  if (p.fotos.length === 0) {
+    principal.classList.add('sin-foto');
+    principal.innerHTML = `<span>${p.tipo} · foto no disponible</span>`;
+    return;
+  }
+  img.src = p.fotos[fotoActual];
+  img.alt = `${p.tipo} en ${p.dir}`;
+  contador.textContent = `${fotoActual + 1} / ${p.fotos.length}`;
+}
+function renderMiniaturas() {
+  const cont = document.getElementById('galeria-miniaturas');
+  cont.innerHTML = p.fotos.map((src, i) => `
+    <button type="button" class="${i === fotoActual ? 'activa' : ''}" data-i="${i}">
+      <img src="${src}" alt="Miniatura ${i + 1}" loading="lazy">
+    </button>`).join('');
+  cont.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      fotoActual = parseInt(btn.dataset.i);
+      renderGaleria();
+      cont.querySelectorAll('button').forEach(b => b.classList.remove('activa'));
+      btn.classList.add('activa');
+    });
+  });
+}
+renderGaleria();
+renderMiniaturas();
+if (!p.videoId) {
+  document.getElementById('btn-ver-video-galeria').style.display = 'none';
+  document.getElementById('btn-abrir-video').style.display = 'none';
+}
+
+// ---------- Datos rápidos ----------
+const datosRapidos = [
+  { valor: p.ambientes ?? '—', etiqueta: 'Ambientes' },
+  { valor: p.dormitorios ?? '—', etiqueta: 'Dormitorios' },
+  { valor: p.banos ?? '—', etiqueta: 'Baños' },
+  { valor: `${p.m2Total} m²`, etiqueta: 'Total construido' },
+];
+document.getElementById('datos-rapidos').innerHTML = datosRapidos.map(d =>
+  `<div class="dato-rapido"><div class="valor">${d.valor}</div><div class="etiqueta">${d.etiqueta}</div></div>`
+).join('');
+
+// ---------- Descripción ----------
+document.getElementById('descripcion-texto').textContent = p.descripcion;
+
+// ---------- Información básica ----------
+const infoBasica = [
+  ['Tipo de propiedad', p.tipo],
+  ['Barrio', p.barrio],
+  ['Superficie cubierta', `${p.m2Cubierta} m²`],
+  ['Superficie semicubierta', `${p.m2Semicubierta} m²`],
+  ['Total construido', `${p.m2Total} m²`],
+  ['Estado', p.estado],
+  ['Disposición', p.disposicion],
+  ['Apto crédito', p.aptoCredito ? 'Sí' : 'No'],
+].filter(([, v]) => v !== null && v !== undefined);
+document.getElementById('lista-info-basica').innerHTML = infoBasica.map(([k, v]) =>
+  `<div class="fila"><span>${k}</span><span>${v}</span></div>`
+).join('');
+
+// ---------- Características ----------
+const iconoCheck = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+document.getElementById('chips-caracteristicas').innerHTML = p.amenities.length
+  ? p.amenities.map(a => `<span class="chip-caracteristica">${iconoCheck}${a}</span>`).join('')
+  : '<p style="color:var(--gris);font-size:14px;">Sin características adicionales cargadas.</p>';
+
+// ---------- Mapa ----------
+document.getElementById('mapa-placeholder').textContent = `Mapa · ${p.barrio}, Mar del Plata`;
+
+// ---------- WhatsApp con mensaje prellenado ----------
+const mensajeWsp = encodeURIComponent(`Hola, me interesa la propiedad ${p.tipo} en ${p.dir} (REF. ${p.ref}) que vi en la web.`);
+document.getElementById('link-whatsapp-ficha').href = `https://wa.me/5492235456335?text=${mensajeWsp}`;
+
+// ---------- Formulario de contacto (demo: no envía, alimentaría Lead con propertyId) ----------
+document.getElementById('form-ficha').addEventListener('submit', (e) => {
+  e.preventDefault();
+  alert('Consulta enviada (demo). En producción esto crea un Lead con source=CONTACT_FORM y propertyId=' + id + '.');
+});
+
+// ---------- Volver a resultados ----------
+document.getElementById('btn-volver').addEventListener('click', () => {
+  if (document.referrer && document.referrer.includes('listado.html')) window.history.back();
+  else window.location.href = `listado.html?operacion=${p.op.toLowerCase()}`;
+});
+
+// ---------- Guardar (favorito) — demo visual ----------
+document.getElementById('btn-favorito').addEventListener('click', function () {
+  this.style.color = 'var(--acento)';
+  this.style.borderColor = 'var(--acento)';
+  this.querySelector('svg').setAttribute('fill', 'var(--acento)');
+});
+
+// ---------- Similares: elegidas de la misma tabla de propiedades, no
+// hardcodeadas — mismo barrio primero, después mismo tipo, excluyendo la
+// propiedad actual. Así el link siempre lleva a una ficha real.
+function elegirSimilares(actual, todas, cantidad = 3) {
+  const resto = todas.filter(x => x.id !== actual.id);
+  const mismoBarrio = resto.filter(x => x.barrio === actual.barrio);
+  const mismoTipo = resto.filter(x => x.tipo === actual.tipo && x.barrio !== actual.barrio);
+  const otras = resto.filter(x => x.barrio !== actual.barrio && x.tipo !== actual.tipo);
+  const elegidas = [...mismoBarrio, ...mismoTipo, ...otras].slice(0, cantidad);
+  return elegidas.map(b => PROPIEDADES[b.id]);
+}
+
+function formatearPrecioMini(s) {
+  if (s.precio === null) return 'Consultar precio';
+  const monto = s.moneda === 'USD' ? `USD ${s.precio.toLocaleString('es-AR')}` : `$ ${s.precio.toLocaleString('es-AR')}`;
+  return s.op === 'Alquiler' ? `${monto} /mes` : monto;
+}
+
+const similares = elegirSimilares(p, PROPIEDADES_BASE);
+document.getElementById('similares-grid').innerHTML = similares.map(s => {
+  const foto = s.fotos.length
+    ? `<img src="${s.fotos[0]}" alt="${s.dir}" loading="lazy">`
+    : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#ece9e4;color:rgba(38,37,37,.35);font-size:12px;">${s.tipo}<br>Foto no disponible</div>`;
+  return `
+  <a class="prop" href="ficha.html?id=${s.id}">
+    <div class="prop-foto">${foto}<span class="prop-op">${s.op}</span></div>
+    <div class="prop-body">
+      <p class="prop-dir-mini">${s.dir}</p>
+      <p class="prop-sub-mini">${s.tipo} · ${s.barrio}, Mar del Plata</p>
+      <p class="prop-precio-mini">${formatearPrecioMini(s)}</p>
+    </div>
+  </a>`;
+}).join('');
+
+// =========================================================================
+// MODAL DE VIDEO: se abre solo automáticamente al entrar, con overlay gris.
+// Al cerrar, recién ahí queda libre el scroll y la interacción con la ficha.
+// Si la propiedad no tiene video cargado, no se muestra nada (no hay modal
+// vacío) y el usuario entra directo a los detalles.
+// =========================================================================
+const modal = document.getElementById('modal-video');
+const iframeModal = document.getElementById('modal-video-iframe');
+
+function abrirModalVideo() {
+  if (!p.videoId) return;
+  const src = `https://www.youtube.com/embed/${p.videoId}?autoplay=1&mute=0&rel=0&modestbranding=1&origin=${encodeURIComponent(location.origin)}`;
+  iframeModal.src = src;
+  document.getElementById('modal-video-titulo').textContent = `Video · ${p.tipo} en ${p.dir}`;
+  modal.classList.add('visible');
+  document.body.classList.add('modal-abierto');
+}
+function cerrarModalVideo() {
+  modal.classList.remove('visible');
+  document.body.classList.remove('modal-abierto');
+  iframeModal.src = ''; // corta la reproducción al cerrar
+}
+
+document.getElementById('btn-cerrar-video').addEventListener('click', cerrarModalVideo);
+modal.addEventListener('click', (e) => { if (e.target === modal) cerrarModalVideo(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('visible')) cerrarModalVideo(); });
+document.getElementById('btn-abrir-video').addEventListener('click', abrirModalVideo);
+document.getElementById('btn-ver-video-galeria').addEventListener('click', abrirModalVideo);
+
+// Auto-apertura al entrar a la ficha (solo si hay video cargado)
+if (p.videoId) {
+  window.addEventListener('load', () => setTimeout(abrirModalVideo, 300));
+}
+</script>
+
+</body>
+</html>

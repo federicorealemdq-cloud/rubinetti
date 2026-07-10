@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rubinetti Propiedades — Venta y alquiler en Mar del Plata</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* =====================================================================
+     PALETA — derivada del logo de Rubinetti Propiedades.
+     Negro del logo: #262525. Malva del logo: #aa6d8f (acento, no soporta
+     texto blanco encima). Primario = mismo matiz malva, oscurecido a AA.
+     ===================================================================== */
+  :root {
+    --primario: #8a4f70;        /* malva oscurecido: botones, links, bandas */
+    --primario-oscuro: #6d3d58; /* hover y footer */
+    --acento: #aa6d8f;          /* malva exacto del logo: badges, bordes */
+    --tinta: #262525;           /* negro exacto del logo */
+    --fondo: #faf9f8;           /* blanco cálido neutro */
+    --gris: #6f6a6d;            /* texto secundario */
+    --linea: rgba(38,37,37,.14);
+
+    /* Tintes de sección — mismo negro/malva del logo, distinta saturación,
+       para que el snap entre pantallas se note sin salir de la paleta. */
+    --fondo-destacadas: #faf9f8;  /* blanco cálido base */
+    --fondo-nosotros:   #f6eef1;  /* tinte malva muy claro */
+    --fondo-contacto:   #eef1ef;  /* tinte verde-grisáceo muy claro */
+
+    --display: 'Fraunces', serif;
+    --sans: 'Outfit', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: var(--sans);
+    background: var(--fondo);
+    color: var(--tinta);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; width: 100%; }
+  h2 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(24px, 2.8vw, 30px);
+    letter-spacing: -0.01em;
+  }
+  :focus-visible { outline: 2px solid var(--primario); outline-offset: 3px; }
+
+  /* ---------- Secciones a viewport completo ---------- */
+  .pantalla {
+    min-height: 100vh;
+    min-height: 100svh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 148px 0 48px; /* nav ≈121px (barra utilitaria + logo 48px) + aire */
+  }
+  /* La última pantalla agrupa tasación + footer y no centra: apila. */
+  .pantalla.final { justify-content: flex-end; padding-bottom: 0; }
+
+  /* Con snap mandatory, si el contenido no entra en el viewport queda
+     inaccesible. En pantallas bajas o táctiles, scroll normal. */
+  @media (max-height: 760px), (max-width: 900px), (pointer: coarse) {
+    html { scroll-snap-type: none; }
+    .pantalla { min-height: 0; padding: 140px 0 48px; }
+    .pantalla.hero-pantalla { min-height: 100svh; padding: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; scroll-snap-type: none; }
+  }
+
+  /* ---------- Nav (fija, cambia de piel al scrollear) ---------- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: var(--fondo);
+    box-shadow: 0 1px 0 var(--linea);
+  }
+
+  .nav-utilitaria {
+    border-bottom: 1px solid var(--linea);
+  }
+  .nav-utilitaria-inner {
+    max-width: 1140px; margin: 0 auto; padding: 9px 24px;
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: 22px; color: var(--gris); font-size: 13px;
+  }
+  .nav-contacto { display: flex; align-items: center; gap: 20px; }
+  .nav-contacto a { display: flex; align-items: center; gap: 6px; }
+  .nav-contacto a:hover { color: var(--tinta); }
+  .nav-contacto svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .nav-redes { display: flex; align-items: center; gap: 12px; }
+  .nav-redes a {
+    display: flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--linea);
+  }
+  .nav-redes a:hover { background: rgba(138,79,112,.08); border-color: var(--acento); }
+  .nav-redes svg { width: 13px; height: 13px; }
+
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px; max-width: 1140px; margin: 0 auto;
+    color: var(--tinta);
+  }
+  .logo { display: flex; align-items: center; }
+  .logo img { height: 48px; width: auto; display: block; }
+  .nav-derecha { display: flex; align-items: center; gap: 22px; }
+  .nav-links { display: flex; gap: 30px; font-size: 15px; font-weight: 500; }
+  .nav-links a {
+    position: relative;
+    padding-bottom: 3px;
+    transition: color .2s;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; left: 0; bottom: 0;
+    width: 100%; height: 1.5px;
+    background: var(--acento);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform .25s ease;
+  }
+  .nav-links a:hover { color: var(--acento); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* ---------- Pantalla 1: Hero ---------- */
+  .hero-pantalla {
+    position: relative;
+    justify-content: center;
+    background:
+      linear-gradient(180deg, rgba(38,37,37,.55) 0%, rgba(38,37,37,.15) 40%, rgba(38,37,37,.70) 100%),
+      url('https://commons.wikimedia.org/wiki/Special:FilePath/Vista%20de%20Mar%20del%20Plata%20desde%20la%20Torre%20Tanque.jpg?width=1920') center / cover no-repeat,
+      linear-gradient(160deg, #4a4448 0%, #363134 55%, #262525 100%);
+    color: #fff;
+    padding: 0;
+  }
+  .hero-placeholder {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    color: rgba(255,255,255,.4);
+    pointer-events: none;
+  }
+  .hero-video {
+    position: absolute; inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .hero-video video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(38,37,37,.55) 0%, rgba(38,37,37,.15) 40%, rgba(38,37,37,.70) 100%);
+  }
+  /* En mobile y con reduced-motion queda la foto: autoplay poco confiable
+     y el video castiga datos y batería. */
+  @media (max-width: 900px), (pointer: coarse), (prefers-reduced-motion: reduce) {
+    .hero-video { display: none; }
+  }
+  .hero-content { position: relative; text-align: center; display: flex; flex-direction: column; align-items: center; }
+  .hero-content h1 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(30px, 4.2vw, 46px);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    max-width: 22ch;
+    margin: 0 auto;
+  }
+  .hero-sub { margin-top: 10px; font-size: 16px; color: rgba(255,255,255,.85); }
+
+  .buscador {
+    margin: 28px auto 0;
+    width: 100%;
+    background: rgba(20,18,19,.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    align-items: center;
+    gap: 22px;
+    box-shadow: 0 12px 36px rgba(0,0,0,.35);
+  }
+  .buscador-campo { display: flex; flex-direction: column; gap: 4px; }
+  .buscador-campo label {
+    font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+  }
+  .buscador select {
+    font-family: var(--sans); font-size: 15px; font-weight: 500; color: #fff;
+    border: none; border-bottom: 1.5px solid rgba(255,255,255,.5);
+    background: transparent; padding: 4px 22px 6px 0;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%23ffffff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 2px center;
+    min-width: 130px;
+    cursor: pointer;
+  }
+  .buscador select option { color: var(--tinta); }
+  .buscador-texto {
+    display: flex; flex-direction: column; gap: 4px;
+    border-left: 1px solid rgba(255,255,255,.18);
+    padding-left: 22px;
+  }
+  .buscador-texto input {
+    font-family: var(--sans); font-size: 16px; color: #fff;
+    background: transparent; border: none; border-bottom: 1.5px solid rgba(255,255,255,.5);
+    padding: 4px 0 6px;
+    width: 100%;
+  }
+  .buscador-texto input::placeholder { color: rgba(255,255,255,.5); }
+  .buscador-texto input:focus { outline: none; border-bottom-color: #fff; }
+  .buscador button {
+    font-family: var(--sans); font-size: 14px; font-weight: 700; letter-spacing: .03em;
+    background: #fff; color: var(--tinta);
+    border: none; border-radius: 6px; padding: 14px 30px; cursor: pointer;
+    white-space: nowrap;
+  }
+  .buscador button:hover { background: #f0edea; }
+  @media (max-width: 820px) {
+    .buscador {
+      grid-template-columns: 1fr 1fr;
+      row-gap: 16px;
+    }
+    .buscador-texto { grid-column: 1 / -1; border-left: none; padding-left: 0; }
+    .buscador button { grid-column: 1 / -1; }
+  }
+
+  .hero-indicador {
+    position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+    color: rgba(255,255,255,.6); font-size: 20px;
+    animation: flotar 1.8s ease-in-out infinite;
+  }
+  @keyframes flotar { 0%,100% { transform: translate(-50%,0);} 50% { transform: translate(-50%,7px);} }
+  @media (prefers-reduced-motion: reduce) { .hero-indicador { animation: none; } }
+
+  /* ---------- Destacadas ---------- */
+  .destacadas { padding: 72px 0; background: var(--fondo-destacadas); }
+  .seccion-nosotros { background: var(--fondo-nosotros); }
+  .seccion-contacto { background: var(--fondo-contacto); }
+  .seccion-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 32px; flex-wrap: wrap; gap: 16px;
+  }
+  .btn-ver-todas {
+    font-size: 14px; font-weight: 700;
+    background: var(--acento); color: #fff;
+    padding: 11px 22px; border-radius: 999px;
+    white-space: nowrap;
+    transition: background .15s, transform .1s;
+  }
+  .btn-ver-todas:hover { background: var(--primario-oscuro); }
+  .btn-ver-todas:active { transform: scale(.97); }
+  .grid-props {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  .carrusel-destacadas { position: relative; }
+  .carrusel-viewport { overflow: hidden; }
+  .carrusel-track { display: block; }
+  .carrusel-track.js-listo { display: flex; transition: transform .4s ease; }
+  .carrusel-slide {
+    flex: 0 0 100%;
+    display: grid;
+    gap: 22px;
+  }
+  .carrusel-flecha {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #fff; border: 1px solid var(--linea);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 5;
+    box-shadow: 0 4px 14px rgba(38,37,37,.12);
+    transition: border-color .15s, transform .15s;
+  }
+  .carrusel-flecha:hover { border-color: var(--acento); transform: translateY(-50%) scale(1.06); }
+  .carrusel-flecha:disabled { opacity: .35; cursor: default; }
+  .carrusel-flecha:disabled:hover { border-color: var(--linea); transform: translateY(-50%); }
+  .carrusel-flecha.izq { left: -22px; }
+  .carrusel-flecha.der { right: -22px; }
+  .carrusel-flecha svg { width: 18px; height: 18px; }
+  .carrusel-puntos {
+    display: flex; justify-content: center; gap: 8px; margin-top: 24px;
+  }
+  .carrusel-puntos button {
+    width: 8px; height: 8px; border-radius: 50%; border: none;
+    background: var(--linea); cursor: pointer; padding: 0;
+    transition: background .15s, width .15s;
+  }
+  .carrusel-puntos button.activo { background: var(--acento); width: 22px; border-radius: 4px; }
+  @media (max-width: 1040px) { .carrusel-flecha.izq { left: 4px; } .carrusel-flecha.der { right: 4px; } }
+  .prop {
+    display: block; background: #fff;
+    border: 1px solid var(--linea); border-radius: 8px;
+    overflow: hidden;
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  }
+  .prop:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 32px rgba(38,37,37,.16);
+    border-color: var(--acento);
+  }
+  .prop-foto {
+    aspect-ratio: 4 / 3;
+    background: #e9e6e0;
+    position: relative;
+    overflow: hidden;
+  }
+  .prop-foto img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s ease; }
+  .prop:hover .prop-foto img { transform: scale(1.06); }
+  .prop-op {
+    position: absolute; top: 10px; left: 10px;
+    background: rgba(38,37,37,.85); color: #fff;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .07em;
+    text-transform: uppercase; padding: 4px 9px; border-radius: 3px;
+  }
+  .prop-body { padding: 14px; }
+  .prop-precio { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+  .prop-precio small { font-size: 12px; font-weight: 400; color: var(--gris); }
+  .prop-dir { margin-top: 2px; font-size: 13px; color: var(--tinta); }
+  .prop-specs {
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid var(--linea);
+    font-size: 12px; color: var(--gris);
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  @media (max-width: 1000px) { .grid-props { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 720px) { .grid-props { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .grid-props { grid-template-columns: 1fr; } }
+
+  /* ---------- Pantalla 4: Institucional / Equipo ---------- */
+  .nosotros-intro { max-width: 62ch; margin-bottom: 36px; }
+  .nosotros-intro p { margin-top: 10px; font-size: 15px; color: var(--gris); }
+  .equipo-grid {
+    display: grid; grid-template-columns: repeat(2, minmax(200px, 260px)); gap: 32px;
+    justify-content: center;
+    margin-bottom: 36px;
+  }
+  .equipo-persona { text-align: left; }
+  .equipo-foto {
+    aspect-ratio: 1 / 1;
+    background: repeating-linear-gradient(45deg, #e3ddd7 0 2px, #dbd3cb 2px 60px);
+    border-radius: 10px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(38,37,37,.35); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase;
+    text-align: center; padding: 10px; margin-bottom: 12px;
+  }
+  .equipo-foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .equipo-nombre { font-size: 15.5px; font-weight: 600; }
+  .equipo-cargo { font-size: 13px; color: var(--acento); margin-top: 2px; }
+  .inst-datos {
+    border-top: 1px solid var(--linea); padding-top: 18px;
+    font-size: 14.5px; display: flex; flex-wrap: wrap; gap: 6px 28px;
+  }
+  .inst-datos strong { font-weight: 600; color: var(--tinta); }
+  @media (max-width: 480px) { .equipo-grid { grid-template-columns: minmax(200px, 260px); } }
+
+  /* ---------- Contacto ---------- */
+  .contacto-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .contacto-intro { margin-top: 10px; margin-bottom: 28px; color: var(--gris); font-size: 15px; max-width: 46ch; }
+  .contacto-form { display: flex; flex-direction: column; gap: 18px; }
+  .campo-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .campo { display: flex; flex-direction: column; gap: 6px; }
+  .campo label { font-size: 13px; font-weight: 500; color: var(--gris); }
+  .campo input, .campo textarea {
+    font-family: var(--sans); font-size: 15px; color: var(--tinta);
+    border: 1px solid var(--linea); border-radius: 5px;
+    padding: 11px 13px; background: #fff;
+    resize: vertical;
+  }
+  .campo input:focus, .campo textarea:focus {
+    outline: none; border-color: var(--acento);
+    box-shadow: 0 0 0 3px rgba(170,109,143,.14);
+  }
+  .btn-enviar {
+    align-self: flex-start;
+    font-family: var(--sans); font-size: 14.5px; font-weight: 600;
+    background: var(--primario); color: #fff;
+    border: none; border-radius: 5px;
+    padding: 13px 30px; cursor: pointer;
+    margin-top: 4px;
+    transition: background .15s;
+  }
+  .btn-enviar:hover { background: var(--primario-oscuro); }
+
+  .contacto-datos-col {
+    display: flex; flex-direction: column; gap: 22px;
+    padding-top: 4px;
+  }
+  .contacto-dato { border-top: 1px solid var(--linea); padding-top: 14px; }
+  .contacto-dato:first-child { border-top: none; padding-top: 0; }
+  .contacto-dato-label {
+    display: block; font-size: 12px; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--acento); margin-bottom: 5px;
+  }
+  .contacto-dato p { font-size: 15px; }
+  .contacto-dato a:hover { color: var(--acento); }
+  .contacto-mapa {
+    margin-top: 4px;
+    aspect-ratio: 4 / 3;
+    background: repeating-linear-gradient(45deg, #e3e0d8 0 2px, #dbd8cf 2px 60px);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    color: rgba(38,37,37,.4);
+  }
+
+  @media (max-width: 820px) {
+    .contacto-grid { grid-template-columns: 1fr; gap: 36px; }
+    .campo-fila { grid-template-columns: 1fr; }
+  }
+
+  footer { background: var(--acento); color: rgba(255,255,255,.9); padding: 56px 0 30px; font-size: 14px; scroll-snap-align: end; }
+  .footer-top {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 40px;
+    padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,.25);
+  }
+  .footer-logo-placa {
+    display: inline-flex; align-items: center;
+    background: rgba(250,249,248,.95);
+    border-radius: 10px;
+    padding: 10px 16px;
+  }
+  .footer-top img { height: 38px; display: block; }
+  .footer-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+  .footer-grid h4 {
+    color: #fff; font-size: 13px; font-weight: 600; letter-spacing: .04em;
+    text-transform: uppercase; margin-bottom: 14px;
+  }
+  .footer-grid a { display: block; padding: 4px 0; color: rgba(255,255,255,.85); }
+  .footer-grid a:hover { color: #fff; text-decoration: underline; }
+  .footer-grid p { color: rgba(255,255,255,.85); }
+  .footer-legal {
+    margin-top: 40px; padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,.25);
+    font-size: 12px; color: rgba(255,255,255,.65);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .footer-disclaimer {
+    font-size: 11.5px; color: rgba(255,255,255,.6);
+    margin-top: 28px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.25);
+    max-width: 90ch; line-height: 1.6;
+  }
+  @media (max-width: 820px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+    .nav-utilitaria { display: none; }
+    .logo img { height: 34px; }
+    .buscador { grid-template-columns: 1fr; }
+  }
+
+  .whatsapp-flotante {
+    position: fixed; right: 22px; bottom: 22px; z-index: 60;
+    width: 58px; height: 58px; border-radius: 50%;
+    background: #25d366;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,.28);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .whatsapp-flotante:hover { transform: scale(1.07); box-shadow: 0 8px 26px rgba(0,0,0,.34); }
+  .whatsapp-flotante svg { width: 30px; height: 30px; }
+  @media (max-width: 600px) {
+    .whatsapp-flotante { right: 16px; bottom: 16px; width: 52px; height: 52px; }
+    .whatsapp-flotante svg { width: 27px; height: 27px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav" aria-label="Principal">
+  <div class="nav-utilitaria">
+    <div class="nav-utilitaria-inner">
+      <div class="nav-contacto">
+        <a href="tel:+542235456335">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +54 223 545-6335
+        </a>
+        <a href="mailto:info@rubinettipropiedades.com.ar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6l-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+          info@rubinettipropiedades.com.ar
+        </a>
+      </div>
+      <div class="nav-redes">
+        <a href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-inner">
+    <a class="logo" href="#" aria-label="Rubinetti Propiedades — inicio">
+      <img src="logo-rubinetti-horizontal.png" alt="Rubinetti Propiedades">
+    </a>
+    <div class="nav-derecha">
+      <div class="nav-links">
+        <!-- Venta, Alquiler y Tasaciones serán páginas propias; placeholders hasta que existan -->
+        <a href="listado.html?operacion=venta">Venta</a>
+        <a href="listado.html?operacion=alquiler">Alquiler</a>
+        <a href="#inmobiliaria">Sobre Nosotros</a>
+        <a href="tasaciones.html">Tasaciones</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<a class="whatsapp-flotante" href="https://wa.me/5492235456335" aria-label="Escribinos por WhatsApp" target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.47 14.38c-.28-.14-1.67-.82-1.93-.92-.26-.1-.45-.14-.64.14-.19.28-.74.92-.9 1.1-.17.19-.33.21-.61.07-.28-.14-1.18-.43-2.25-1.38-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.33.42-.5.14-.16.19-.28.28-.47.09-.19.05-.35-.02-.5-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49-.17-.01-.36-.01-.55-.01-.19 0-.5.07-.76.35-.26.28-1 .98-1 2.39s1.02 2.77 1.16 2.96c.14.19 2.01 3.07 4.87 4.3.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.11.55-.08 1.67-.68 1.9-1.34.24-.65.24-1.21.17-1.33-.07-.12-.26-.19-.54-.33z"/><path d="M12 2a10 10 0 0 0-8.5 15.24L2 22l4.9-1.47A10 10 0 1 0 12 2zm0 18.18a8.15 8.15 0 0 1-4.16-1.14l-.3-.18-3.09.92.94-3.01-.2-.31A8.18 8.18 0 1 1 12 20.18z"/></svg>
+</a>
+
+<header class="pantalla hero-pantalla">
+  <!-- DEMO: video embebido de YouTube. Para producción, reemplazar por
+       material propio o licenciado en un <video> self-hosted / CDN de video.
+       No lanzar colgado de un video ajeno de YouTube. -->
+  <div class="hero-video" aria-hidden="true">
+    <video autoplay muted loop playsinline
+      poster="https://commons.wikimedia.org/wiki/Special:FilePath/Vista%20de%20Mar%20del%20Plata%20desde%20la%20Torre%20Tanque.jpg?width=1920">
+      <source src="mar_del_plata.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="wrap hero-content">
+    <form class="buscador" aria-label="Buscar propiedades" id="form-buscador">
+      <div class="buscador-campo">
+        <label for="op">Operación</label>
+        <select id="op" aria-label="Operación">
+          <option>Venta</option>
+          <option>Alquiler</option>
+        </select>
+      </div>
+      <div class="buscador-campo">
+        <label for="tipo">Tipo</label>
+        <select id="tipo" aria-label="Tipo de propiedad">
+          <option value="">Tipo de propiedad</option>
+          <option>Departamento</option>
+          <option>Casa</option>
+          <option>PH</option>
+          <option>Local comercial</option>
+          <option>Lote</option>
+          <option>Cochera</option>
+        </select>
+      </div>
+      <div class="buscador-texto">
+        <label for="q">Ubicación</label>
+        <input id="q" type="text" placeholder="Buscar por ubicación, dirección o calle" autocomplete="off">
+      </div>
+      <button type="submit">Buscar</button>
+    </form>
+  </div>
+  <span class="hero-indicador" aria-hidden="true">↓</span>
+</header>
+
+<script>
+  // Conecta el buscador del hero con listado.html. El campo de texto libre
+  // ("q") hoy solo intenta matchear contra el nombre de barrio en el
+  // listado — no busca por calle/dirección todavía, porque eso necesita
+  // el backend con ILIKE sobre street/neighborhood que quedó pendiente
+  // en el modelo de datos. Queda como parámetro igual, listo para cuando
+  // exista esa búsqueda real.
+  document.getElementById('form-buscador').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const operacion = document.getElementById('op').value === 'Alquiler' ? 'alquiler' : 'venta';
+    const tipo = document.getElementById('tipo').value;
+    const q = document.getElementById('q').value.trim();
+    const params = new URLSearchParams({ operacion });
+    if (tipo) params.set('tipo', tipo);
+    if (q) params.set('q', q);
+    window.location.href = `listado.html?${params.toString()}`;
+  });
+</script>
+
+
+<section class="pantalla destacadas">
+  <div class="wrap">
+    <div class="seccion-head">
+      <h2>Propiedades destacadas</h2>
+      <a class="btn-ver-todas" href="listado.html?operacion=venta">Ver todas las propiedades →</a>
+    </div>
+
+    <div class="carrusel-destacadas">
+      <button class="carrusel-flecha izq" id="carrusel-izq" type="button" aria-label="Propiedades anteriores">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+
+      <div class="carrusel-viewport">
+        <div class="carrusel-track" id="carrusel-track">
+          <!-- Fuente de datos + fallback sin JS: si el script no corre, estas
+               8 cards se ven igual, apiladas en una grilla de 3 columnas. -->
+          <div class="grid-props" id="destacadas-fuente">
+            <a class="prop" href="ficha.html?id=1">
+              <div class="prop-foto"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Chalet%20calle%20Rawson.jpg?width=700" alt="Rawson al 4500 · Plaza Mitre" loading="lazy"><span class="prop-op">Venta</span></div>
+              <div class="prop-body">
+                <p class="prop-precio">USD 45.000</p>
+                <p class="prop-dir">Rawson al 4500 · Plaza Mitre</p>
+                <p class="prop-specs"><span>2 amb</span><span>52 m²</span><span>Cochera</span></p>
+              </div>
+            </a>
+            <a class="prop" href="ficha.html?id=2">
+              <div class="prop-foto"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Chalet%20calle%20Alberti.jpg?width=700" alt="Alberti al 1200 · Güemes" loading="lazy"><span class="prop-op">Venta</span></div>
+              <div class="prop-body">
+                <p class="prop-precio">USD 72.000</p>
+                <p class="prop-dir">Alberti al 1200 · Güemes</p>
+                <p class="prop-specs"><span>3 amb</span><span>78 m²</span><span>Balcón</span></p>
+              </div>
+            </a>
+            <a class="prop" href="ficha.html?id=3">
+              <div class="prop-foto"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Chalet%20al%20atardecer-2.jpg?width=700" alt="San Luis al 2300 · Centro" loading="lazy"><span class="prop-op">Alquiler</span></div>
+              <div class="prop-body">
+                <p class="prop-precio">$ 480.000 <small>por mes</small></p>
+                <p class="prop-dir">San Luis al 2300 · Centro</p>
+                <p class="prop-specs"><span>1 amb</span><span>34 m²</span><span>24 meses</span></p>
+              </div>
+            </a>
+            <a class="prop" href="ficha.html?id=4">
+              <div class="prop-foto"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Chalet%20calle%20Rawson.jpg?width=700" alt="Belgrano al 2800 · Centro" loading="lazy"><span class="prop-op">Venta</span></div>
+              <div class="prop-body">
+                <p class="prop-precio">USD 58.000</p>
+                <p class="prop-dir">Belgrano al 2800 · Centro</p>
+                <p class="prop-specs"><span>2 amb</span><span>48 m²</span><span>Balcón</span></p>
+              </div>
+            </a>
+            <a class="prop" href="ficha.html?id=5">
+              <div class="prop-foto"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Barrio%20La%20Perla%20antiguo.jpg?width=700" alt="Colón al 3500 · La Perla" loading="lazy"><span class="prop-op">Venta</span></div>
+              <div class="prop-body">
+                <p class="prop-precio">USD 94.000</p>
+                <p class="prop-dir">Colón al 3500 · La Perla</p>
+                <p class="prop-specs"><span>3 amb</span><span>85 m²</span><span>Vista al mar</span></p>
+              </div>
+            </a>
+            <a class="prop" href="ficha.html?id=6">
+              <div class="prop-foto"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Chalet%20calle%20Alberti.jpg?width=700" alt="Güemes al 900 · Güemes" loading="lazy"><span class="prop-op">Alquiler</span></div>
+              <div class="prop-body">
+                <p class="prop-precio">$ 620.000 <small>por mes</small></p>
+                <p class="prop-dir">Güemes al 900 · Güemes</p>
+                <p class="prop-specs"><span>2 amb</span><span>60 m²</span><span>12 meses</span></p>
+              </div>
+            </a>
+            <a class="prop" href="ficha.html?id=7">
+              <div class="prop-foto"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Chalet%20al%20atardecer-2.jpg?width=700" alt="Falucho al 1400 · Puerto" loading="lazy"><span class="prop-op">Venta</span></div>
+              <div class="prop-body">
+                <p class="prop-precio">USD 31.000</p>
+                <p class="prop-dir">Falucho al 1400 · Puerto</p>
+                <p class="prop-specs"><span>1 amb</span><span>38 m²</span><span>Cochera</span></p>
+              </div>
+            </a>
+            <a class="prop" href="ficha.html?id=8">
+              <div class="prop-foto"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Chalet%20calle%20Rawson.jpg?width=700" alt="Bernardo de Irigoyen al 400 · Centro" loading="lazy"><span class="prop-op">Venta</span></div>
+              <div class="prop-body">
+                <p class="prop-precio">USD 110.000</p>
+                <p class="prop-dir">Bernardo de Irigoyen al 400 · Centro</p>
+                <p class="prop-specs"><span>4 amb</span><span>120 m²</span><span>Cochera doble</span></p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <button class="carrusel-flecha der" id="carrusel-der" type="button" aria-label="Propiedades siguientes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+
+    <div class="carrusel-puntos" id="carrusel-puntos"></div>
+  </div>
+</section>
+
+<section class="pantalla seccion-nosotros" id="inmobiliaria">
+  <div class="wrap">
+    <div class="nosotros-intro">
+      <h2>Sobre Nosotros</h2>
+      <p>En nuestro rincón inmobiliario, creamos un espacio donde la pasión por los bienes raíces se entrelaza con la dedicación de un equipo femenino comprometido. Somos más que una inmobiliaria; somos un reflejo de la calidez marplatense.</p>
+      <p>Con una visión única, nos esforzamos por construir hogares que resuenen con la esencia de cada persona. Desde el primer encuentro hasta la entrega de llaves, cada paso es guiado por la empatía y el entendimiento de tus sueños y necesidades.</p>
+    </div>
+
+    <!-- PLACEHOLDER: falta la foto real de cada una. Cargos también son
+         provisorios (el texto de la web actual no especifica roles
+         distintos) — reemplazar cuando el cliente lo confirme. -->
+    <div class="equipo-grid">
+      <div class="equipo-persona">
+        <div class="equipo-foto">Foto de Patricia</div>
+        <p class="equipo-nombre">Patricia</p>
+        <p class="equipo-cargo">Corredora Pública</p>
+      </div>
+      <div class="equipo-persona">
+        <div class="equipo-foto">Foto de Fiamma</div>
+        <p class="equipo-nombre">Fiamma</p>
+        <p class="equipo-cargo">Corredora Pública</p>
+      </div>
+    </div>
+
+    <div class="inst-datos">
+      <span><strong>Dirección:</strong> Av. Rivadavia 3850, Mar del Plata</span>
+      <span><strong>Horario:</strong> Lunes a viernes de 9 a 18 h</span>
+      <span><strong>Teléfono:</strong> +54 223 545-6335</span>
+    </div>
+  </div>
+</section>
+
+<section class="pantalla seccion-contacto" id="contacto">
+  <div class="wrap contacto-grid">
+    <div class="contacto-form-col">
+      <h2>Contacto</h2>
+      <p class="contacto-intro">Contanos qué estás buscando o qué necesitás y te respondemos a la brevedad.</p>
+      <form class="contacto-form" aria-label="Formulario de contacto">
+        <div class="campo">
+          <label for="c-nombre">Nombre</label>
+          <input id="c-nombre" name="nombre" type="text" required>
+        </div>
+        <div class="campo-fila">
+          <div class="campo">
+            <label for="c-telefono">Teléfono</label>
+            <input id="c-telefono" name="telefono" type="tel">
+          </div>
+          <div class="campo">
+            <label for="c-email">Email</label>
+            <input id="c-email" name="email" type="email" required>
+          </div>
+        </div>
+        <div class="campo">
+          <label for="c-mensaje">Mensaje</label>
+          <textarea id="c-mensaje" name="mensaje" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn-enviar">Enviar consulta</button>
+      </form>
+    </div>
+    <div class="contacto-datos-col">
+      <div class="contacto-dato">
+        <span class="contacto-dato-label">Dirección</span>
+        <p>Av. Rivadavia 3850<br>Mar del Plata, Argentina</p>
+      </div>
+      <div class="contacto-dato">
+        <span class="contacto-dato-label">Horario</span>
+        <p>Lunes a viernes de 9 a 18 h</p>
+      </div>
+      <div class="contacto-dato">
+        <span class="contacto-dato-label">Teléfono</span>
+        <p><a href="tel:+542235456335">+54 223 545-6335</a></p>
+      </div>
+      <div class="contacto-dato">
+        <span class="contacto-dato-label">Email</span>
+        <p><a href="mailto:info@rubinettipropiedades.com.ar">info@rubinettipropiedades.com.ar</a></p>
+      </div>
+      <div class="contacto-mapa" role="img" aria-label="Mapa de la ubicación de la oficina">Mapa · Av. Rivadavia 3850</div>
+    </div>
+  </div>
+</section>
+
+<footer id="pie">
+  <div class="wrap">
+    <div class="footer-top"><span class="footer-logo-placa"><img src="logo-rubinetti-horizontal.png" alt="Rubinetti Propiedades"></span></div>
+    <div class="footer-grid">
+      <div>
+        <h4>Rubinetti Propiedades</h4>
+        <p>Av. Rivadavia 3850<br>Mar del Plata, Argentina<br>Lunes a viernes de 9 a 18 h</p>
+      </div>
+      <div>
+        <h4>La inmobiliaria</h4>
+        <a href="#inmobiliaria">Sobre Nosotros</a>
+        <a href="#contacto">Contacto</a>
+        <a href="tasaciones.html">Tasaciones</a>
+      </div>
+      <div>
+        <h4>Propiedades</h4>
+        <a href="listado.html?operacion=venta">En venta</a>
+        <a href="listado.html?operacion=alquiler">En alquiler</a>
+        <a href="listado.html?operacion=venta&tipo=Departamento">Departamentos</a>
+        <a href="listado.html?operacion=venta&tipo=Casa">Casas</a>
+        <a href="listado.html?operacion=venta&tipo=PH">PH</a>
+        <a href="listado.html?operacion=venta&tipo=Lote">Lotes</a>
+      </div>
+      <div>
+        <h4>Contacto directo</h4>
+        <a href="https://wa.me/5492235456335" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="#">Instagram</a>
+        <a href="tel:+542235456335">+54 223 545-6335</a>
+        <a href="mailto:info@rubinettipropiedades.com.ar">Email</a>
+      </div>
+    </div>
+    <p class="footer-disclaimer">Las medidas, superficies y demás datos enunciados son meramente orientativos; las medidas exactas serán las que consten en el respectivo título de propiedad de cada inmueble. Todas las fotos e imágenes son ilustrativas y no contractuales. Los precios enunciados no son vinculantes y están sujetos a confirmación.</p>
+    <div class="footer-legal">
+      <span>© 2026 Rubinetti Propiedades · Corredores públicos Mat. XXXX</span>
+      <span>Mar del Plata, Argentina</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // La nav ya es opaca desde el arranque (cubre el video), no necesita
+  // lógica de transparencia por scroll.
+</script>
+
+<script>
+  /* =====================================================================
+     Carrusel de Destacadas: agrupa las cards ya presentes en el HTML
+     (fuente + fallback sin JS en #destacadas-fuente) en slides de a 3
+     -en desktop, 2 en tablet, 1 en mobile- y las controla con flechas
+     y puntos. Si este script no corre, las 8 cards se ven igual,
+     apiladas en la grilla estática de #destacadas-fuente.
+     ===================================================================== */
+  (function () {
+    const track = document.getElementById('carrusel-track');
+    const fuente = document.getElementById('destacadas-fuente');
+    const btnIzq = document.getElementById('carrusel-izq');
+    const btnDer = document.getElementById('carrusel-der');
+    const contPuntos = document.getElementById('carrusel-puntos');
+    if (!track || !fuente) return;
+
+    const cards = Array.from(fuente.querySelectorAll('.prop'));
+    let porSlide = 3;
+    let indice = 0;
+
+    function calcularPorSlide() {
+      const w = window.innerWidth;
+      if (w < 640) return 1;
+      if (w < 1040) return 2;
+      return 3;
+    }
+
+    function construirSlides() {
+      porSlide = calcularPorSlide();
+      indice = 0;
+      const grupos = [];
+      for (let i = 0; i < cards.length; i += porSlide) grupos.push(cards.slice(i, i + porSlide));
+
+      track.innerHTML = '';
+      track.classList.add('js-listo');
+      grupos.forEach(grupo => {
+        const slide = document.createElement('div');
+        slide.className = 'carrusel-slide';
+        slide.style.gridTemplateColumns = `repeat(${porSlide}, 1fr)`;
+        grupo.forEach(card => slide.appendChild(card.cloneNode(true)));
+        track.appendChild(slide);
+      });
+
+      construirPuntos(grupos.length);
+      actualizar();
+    }
+
+    function construirPuntos(cantidad) {
+      contPuntos.innerHTML = '';
+      for (let i = 0; i < cantidad; i++) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('aria-label', `Ir al grupo ${i + 1} de propiedades`);
+        b.addEventListener('click', () => { indice = i; actualizar(); });
+        contPuntos.appendChild(b);
+      }
+    }
+
+    function actualizar() {
+      const totalSlides = track.children.length;
+      track.style.transform = `translateX(-${indice * 100}%)`;
+      btnIzq.disabled = indice === 0;
+      btnDer.disabled = indice === totalSlides - 1;
+      [...contPuntos.children].forEach((b, i) => b.classList.toggle('activo', i === indice));
+    }
+
+    btnIzq.addEventListener('click', () => { if (indice > 0) { indice--; actualizar(); } });
+    btnDer.addEventListener('click', () => { if (indice < track.children.length - 1) { indice++; actualizar(); } });
+
+    let anchoPrevio = calcularPorSlide();
+    window.addEventListener('resize', () => {
+      clearTimeout(window._carruselResizeTimer);
+      window._carruselResizeTimer = setTimeout(() => {
+        const nuevo = calcularPorSlide();
+        if (nuevo !== anchoPrevio) { anchoPrevio = nuevo; construirSlides(); }
+      }, 150);
+    });
+
+    construirSlides();
+  })();
+</script>
+
+</body>
+</html>

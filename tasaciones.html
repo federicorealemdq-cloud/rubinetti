@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tasación de tu propiedad sin cargo — Rubinetti Propiedades</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primario: #8a4f70;
+    --primario-oscuro: #6d3d58;
+    --acento: #aa6d8f;
+    --tinta: #262525;
+    --fondo: #faf9f8;
+    --gris: #6f6a6d;
+    --linea: rgba(38,37,37,.14);
+    --display: 'Fraunces', serif;
+    --sans: 'Outfit', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--sans); background: var(--fondo); color: var(--tinta);
+    font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; width: 100%; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 500; letter-spacing: -0.01em; }
+  :focus-visible { outline: 2px solid var(--primario); outline-offset: 3px; }
+
+  /* ---------- Nav (idéntica al resto del sitio) ---------- */
+  nav { position: sticky; top: 0; z-index: 50; background: var(--fondo); box-shadow: 0 1px 0 var(--linea); }
+  .nav-utilitaria { border-bottom: 1px solid var(--linea); }
+  .nav-utilitaria-inner {
+    max-width: 1140px; margin: 0 auto; padding: 9px 24px;
+    display: flex; align-items: center; justify-content: flex-end; gap: 22px;
+    color: var(--gris); font-size: 13px;
+  }
+  .nav-contacto { display: flex; align-items: center; gap: 20px; }
+  .nav-contacto a { display: flex; align-items: center; gap: 6px; }
+  .nav-contacto a:hover { color: var(--tinta); }
+  .nav-contacto svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .nav-redes { display: flex; align-items: center; gap: 12px; }
+  .nav-redes a { display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--linea); }
+  .nav-redes a:hover { background: rgba(138,79,112,.08); border-color: var(--acento); }
+  .nav-redes svg { width: 13px; height: 13px; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; max-width: 1140px; margin: 0 auto; }
+  .logo img { height: 48px; width: auto; display: block; }
+  .nav-links { display: flex; gap: 30px; font-size: 15px; font-weight: 500; }
+  .nav-links a { position: relative; padding-bottom: 3px; transition: color .2s; }
+  .nav-links a::after {
+    content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 1.5px;
+    background: var(--acento); transform: scaleX(0); transform-origin: center; transition: transform .25s ease;
+  }
+  .nav-links a:hover { color: var(--acento); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-links a.activo { color: var(--acento); }
+  .nav-links a.activo::after { transform: scaleX(1); }
+  @media (max-width: 720px) { .nav-links, .nav-utilitaria { display: none; } .logo img { height: 34px; } }
+
+  /* ---------- Hero ---------- */
+  .hero-tasacion {
+    background: var(--acento); color: #fff;
+    padding: 64px 0 56px;
+  }
+  .hero-tasacion .kicker {
+    font-size: 12.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: rgba(255,255,255,.85); margin-bottom: 14px;
+  }
+  .hero-tasacion h1 { font-size: clamp(28px, 4vw, 42px); max-width: 18ch; line-height: 1.12; }
+  .hero-tasacion p { margin-top: 16px; max-width: 52ch; font-size: 16px; color: rgba(255,255,255,.9); }
+  .hero-trust {
+    display: flex; gap: 28px; margin-top: 32px; flex-wrap: wrap;
+  }
+  .hero-trust div { display: flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 500; }
+  .hero-trust svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+  /* ---------- Layout: proceso + form ---------- */
+  .layout-tasacion {
+    display: grid; grid-template-columns: 1fr 420px; gap: 48px;
+    padding: 56px 0 72px; align-items: start;
+  }
+
+  /* ---------- Proceso ---------- */
+  .proceso-titulo { font-size: 21px; margin-bottom: 6px; }
+  .proceso-sub { color: var(--gris); font-size: 14.5px; margin-bottom: 32px; max-width: 50ch; }
+  .pasos { display: flex; flex-direction: column; gap: 0; }
+  .paso {
+    display: flex; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--linea);
+  }
+  .paso:first-child { padding-top: 0; }
+  .paso:last-child { border-bottom: none; }
+  .paso-num {
+    font-family: var(--display); font-size: 26px; font-weight: 500; color: var(--acento);
+    flex-shrink: 0; width: 40px;
+  }
+  .paso h3 { font-family: var(--sans); font-size: 15.5px; font-weight: 600; margin-bottom: 5px; }
+  .paso p { font-size: 14px; color: var(--gris); max-width: 48ch; }
+
+  .preguntas { margin-top: 44px; }
+  .pregunta { border-bottom: 1px solid var(--linea); }
+  .pregunta summary {
+    cursor: pointer; list-style: none; padding: 16px 0;
+    font-size: 15px; font-weight: 500;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .pregunta summary::-webkit-details-marker { display: none; }
+  .pregunta summary::after {
+    content: '+'; font-size: 20px; color: var(--acento); font-weight: 400; flex-shrink: 0; margin-left: 12px;
+    transition: transform .2s;
+  }
+  .pregunta[open] summary::after { transform: rotate(45deg); }
+  .pregunta p { padding: 0 0 18px; font-size: 14px; color: var(--gris); max-width: 54ch; }
+
+  /* ---------- Formulario ---------- */
+  .card-form {
+    background: #fff; border: 1px solid var(--linea); border-radius: 12px;
+    padding: 28px; position: sticky; top: 78px;
+  }
+  .card-form h2 { font-size: 19px; margin-bottom: 4px; }
+  .card-form .sub { font-size: 13.5px; color: var(--gris); margin-bottom: 20px; }
+  .campo { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+  .campo-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .campo label { font-size: 12.5px; font-weight: 500; color: var(--gris); }
+  .campo input, .campo select, .campo textarea {
+    font-family: var(--sans); font-size: 14.5px; color: var(--tinta);
+    border: 1px solid var(--linea); border-radius: 6px; padding: 10px 11px; background: #fff; resize: vertical;
+  }
+  .campo input:focus, .campo select:focus, .campo textarea:focus {
+    outline: none; border-color: var(--acento); box-shadow: 0 0 0 3px rgba(170,109,143,.14);
+  }
+  .btn-enviar-tasacion {
+    width: 100%; font-family: var(--sans); font-size: 15px; font-weight: 700;
+    background: var(--primario); color: #fff; border: none; border-radius: 8px;
+    padding: 13px; cursor: pointer; margin-top: 4px; transition: background .15s;
+  }
+  .btn-enviar-tasacion:hover { background: var(--primario-oscuro); }
+  .separador-o {
+    display: flex; align-items: center; gap: 12px; margin: 18px 0;
+    color: var(--gris); font-size: 12.5px;
+  }
+  .separador-o::before, .separador-o::after { content: ''; flex: 1; height: 1px; background: var(--linea); }
+  .btn-whatsapp-tasacion {
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    background: #25d366; color: #fff; font-weight: 700; font-size: 14.5px;
+    padding: 13px; border-radius: 8px;
+  }
+  .btn-whatsapp-tasacion:hover { background: #1ebc59; }
+  .btn-whatsapp-tasacion svg { width: 18px; height: 18px; }
+  .form-confirmacion {
+    display: none; text-align: center; padding: 12px 4px 4px;
+  }
+  .form-confirmacion.visible { display: block; }
+  .form-confirmacion .icono-ok {
+    width: 44px; height: 44px; border-radius: 50%; background: rgba(170,109,143,.12);
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;
+  }
+  .form-confirmacion .icono-ok svg { width: 22px; height: 22px; color: var(--acento); }
+  .form-confirmacion h3 { font-size: 16px; margin-bottom: 6px; }
+  .form-confirmacion p { font-size: 13.5px; color: var(--gris); }
+
+  @media (max-width: 980px) {
+    .layout-tasacion { grid-template-columns: 1fr; }
+    .card-form { position: static; }
+  }
+  @media (max-width: 480px) { .campo-fila { grid-template-columns: 1fr; } }
+
+  /* ---------- WhatsApp flotante + footer (idénticos al resto del sitio) ---------- */
+  .whatsapp-flotante {
+    position: fixed; right: 22px; bottom: 22px; z-index: 60;
+    width: 58px; height: 58px; border-radius: 50%; background: #25d366;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,.28); transition: transform .15s, box-shadow .15s;
+  }
+  .whatsapp-flotante:hover { transform: scale(1.07); box-shadow: 0 8px 26px rgba(0,0,0,.34); }
+  .whatsapp-flotante svg { width: 30px; height: 30px; }
+
+  footer { background: var(--acento); color: rgba(255,255,255,.9); padding: 56px 0 30px; font-size: 14px; }
+  .footer-top { display: flex; align-items: center; gap: 14px; margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,.25); }
+  .footer-logo-placa {
+    display: inline-flex; align-items: center;
+    background: rgba(250,249,248,.95);
+    border-radius: 10px;
+    padding: 10px 16px;
+  }
+  .footer-top img { height: 38px; display: block; }
+  .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  .footer-grid h4 { color: #fff; font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 14px; }
+  .footer-grid a { display: block; padding: 4px 0; color: rgba(255,255,255,.85); }
+  .footer-grid a:hover { color: #fff; text-decoration: underline; }
+  .footer-grid p { color: rgba(255,255,255,.85); }
+  .footer-legal { margin-top: 40px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.25); font-size: 12px; color: rgba(255,255,255,.65); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .footer-disclaimer { font-size: 11.5px; color: rgba(255,255,255,.6); margin-top: 28px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.25); max-width: 90ch; line-height: 1.6; }
+  @media (max-width: 820px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav aria-label="Principal">
+  <div class="nav-utilitaria">
+    <div class="nav-utilitaria-inner">
+      <div class="nav-contacto">
+        <a href="tel:+542235456335">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +54 223 545-6335
+        </a>
+        <a href="mailto:info@rubinettipropiedades.com.ar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6l-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+          info@rubinettipropiedades.com.ar
+        </a>
+      </div>
+      <div class="nav-redes">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-inner">
+    <a class="logo" href="index.html" aria-label="Rubinetti Propiedades — inicio">
+      <img src="logo-rubinetti-horizontal.png" alt="Rubinetti Propiedades">
+    </a>
+    <div class="nav-links">
+      <a href="listado.html?operacion=venta">Venta</a>
+      <a href="listado.html?operacion=alquiler">Alquiler</a>
+      <a href="index.html#inmobiliaria">Sobre Nosotros</a>
+      <a href="tasaciones.html" class="activo">Tasaciones</a>
+      <a href="index.html#contacto">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero-tasacion">
+  <div class="wrap">
+    <p class="kicker">Tasaciones</p>
+    <h1>Tasamos tu propiedad sin cargo</h1>
+    <p>La visitamos, la comparamos con operaciones reales de tu zona y te damos un valor de publicación con fundamento. Sin compromiso de venta.</p>
+    <div class="hero-trust">
+      <div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        Tasación 100% sin cargo
+      </div>
+      <div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Respuesta en 24-48 h hábiles
+      </div>
+      <div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+        Corredores públicos matriculados
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap layout-tasacion">
+  <div class="contenido-tasacion">
+    <h2 class="proceso-titulo">Cómo funciona</h2>
+    <p class="proceso-sub">Cuatro pasos, sin vueltas ni letra chica.</p>
+    <div class="pasos">
+      <div class="paso">
+        <span class="paso-num">1</span>
+        <div>
+          <h3>Nos contás sobre tu propiedad</h3>
+          <p>Completás el formulario o nos escribís por WhatsApp con la dirección y algunos datos básicos.</p>
+        </div>
+      </div>
+      <div class="paso">
+        <span class="paso-num">2</span>
+        <div>
+          <h3>Coordinamos una visita</h3>
+          <p>Vamos a conocer la propiedad en persona, en el horario que te quede cómodo.</p>
+        </div>
+      </div>
+      <div class="paso">
+        <span class="paso-num">3</span>
+        <div>
+          <h3>Analizamos comparables reales</h3>
+          <p>Revisamos ventas y publicaciones actuales de tu barrio para fundamentar el valor, no un número al azar.</p>
+        </div>
+      </div>
+      <div class="paso">
+        <span class="paso-num">4</span>
+        <div>
+          <h3>Te enviamos el valor de publicación</h3>
+          <p>Dentro de 24 a 48 horas hábiles, con el detalle de en qué nos basamos. Sin compromiso de venta.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="preguntas">
+      <details class="pregunta">
+        <summary>¿La tasación tiene algún costo?</summary>
+        <p>No, es un servicio sin cargo y sin compromiso. Solo te pedimos los datos de contacto y de la propiedad para poder coordinar la visita.</p>
+      </details>
+      <details class="pregunta">
+        <summary>¿Tengo que vender o alquilar sí o sí?</summary>
+        <p>No. Podés usar la tasación simplemente para saber cuánto vale tu propiedad hoy, sin ninguna obligación de publicarla con nosotros.</p>
+      </details>
+      <details class="pregunta">
+        <summary>¿Qué necesito tener a mano para la visita?</summary>
+        <p>Con que estés vos o alguien que conozca la propiedad alcanza. Si tenés escritura o plano, ayuda, pero no es excluyente para hacer la tasación.</p>
+      </details>
+      <details class="pregunta">
+        <summary>¿Tasan propiedades fuera de Mar del Plata?</summary>
+        <p>Trabajamos principalmente en Mar del Plata y alrededores. Contanos la ubicación en el formulario y te confirmamos si podemos cubrir la zona.</p>
+      </details>
+    </div>
+  </div>
+
+  <aside class="card-form" id="card-form">
+    <div id="form-contenido">
+      <h2>Pedí tu tasación</h2>
+      <p class="sub">Te contactamos para coordinar la visita.</p>
+      <form id="form-tasacion">
+        <div class="campo-fila">
+          <div class="campo">
+            <label for="t-nombre">Nombre</label>
+            <input id="t-nombre" type="text" required>
+          </div>
+          <div class="campo">
+            <label for="t-telefono">Teléfono</label>
+            <input id="t-telefono" type="tel" required>
+          </div>
+        </div>
+        <div class="campo">
+          <label for="t-email">Email</label>
+          <input id="t-email" type="email">
+        </div>
+        <div class="campo">
+          <label for="t-direccion">Dirección de la propiedad</label>
+          <input id="t-direccion" type="text" placeholder="Calle y altura" required>
+        </div>
+        <div class="campo-fila">
+          <div class="campo">
+            <label for="t-barrio">Barrio</label>
+            <input id="t-barrio" type="text">
+          </div>
+          <div class="campo">
+            <label for="t-tipo">Tipo de propiedad</label>
+            <select id="t-tipo">
+              <option value="">Seleccioná</option>
+              <option>Departamento</option>
+              <option>Casa</option>
+              <option>PH</option>
+              <option>Local comercial</option>
+              <option>Lote</option>
+              <option>Cochera</option>
+            </select>
+          </div>
+        </div>
+        <div class="campo">
+          <label for="t-mensaje">Comentarios (opcional)</label>
+          <textarea id="t-mensaje" rows="3" placeholder="Ambientes, m² aproximados, algo que quieras contarnos"></textarea>
+        </div>
+        <button type="submit" class="btn-enviar-tasacion">Pedir tasación sin cargo</button>
+      </form>
+      <div class="separador-o">o si preferís</div>
+      <a class="btn-whatsapp-tasacion" href="https://wa.me/5492235456335?text=Hola%2C%20quiero%20pedir%20una%20tasaci%C3%B3n%20sin%20cargo%20para%20mi%20propiedad." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.47 14.38c-.28-.14-1.67-.82-1.93-.92-.26-.1-.45-.14-.64.14-.19.28-.74.92-.9 1.1-.17.19-.33.21-.61.07-.28-.14-1.18-.43-2.25-1.38-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.33.42-.5.14-.16.19-.28.28-.47.09-.19.05-.35-.02-.5-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49-.17-.01-.36-.01-.55-.01-.19 0-.5.07-.76.35-.26.28-1 .98-1 2.39s1.02 2.77 1.16 2.96c.14.19 2.01 3.07 4.87 4.3.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.11.55-.08 1.67-.68 1.9-1.34.24-.65.24-1.21.17-1.33-.07-.12-.26-.19-.54-.33z"/><path d="M12 2a10 10 0 0 0-8.5 15.24L2 22l4.9-1.47A10 10 0 1 0 12 2zm0 18.18a8.15 8.15 0 0 1-4.16-1.14l-.3-.18-3.09.92.94-3.01-.2-.31A8.18 8.18 0 1 1 12 20.18z"/></svg>
+        Escribinos por WhatsApp
+      </a>
+    </div>
+    <div class="form-confirmacion" id="form-confirmacion">
+      <div class="icono-ok">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3>Recibimos tu pedido</h3>
+      <p>Te vamos a contactar en las próximas 24-48 horas hábiles para coordinar la visita.</p>
+    </div>
+  </aside>
+</div>
+
+<a class="whatsapp-flotante" href="https://wa.me/5492235456335" aria-label="Escribinos por WhatsApp" target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.47 14.38c-.28-.14-1.67-.82-1.93-.92-.26-.1-.45-.14-.64.14-.19.28-.74.92-.9 1.1-.17.19-.33.21-.61.07-.28-.14-1.18-.43-2.25-1.38-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.33.42-.5.14-.16.19-.28.28-.47.09-.19.05-.35-.02-.5-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49-.17-.01-.36-.01-.55-.01-.19 0-.5.07-.76.35-.26.28-1 .98-1 2.39s1.02 2.77 1.16 2.96c.14.19 2.01 3.07 4.87 4.3.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.11.55-.08 1.67-.68 1.9-1.34.24-.65.24-1.21.17-1.33-.07-.12-.26-.19-.54-.33z"/><path d="M12 2a10 10 0 0 0-8.5 15.24L2 22l4.9-1.47A10 10 0 1 0 12 2zm0 18.18a8.15 8.15 0 0 1-4.16-1.14l-.3-.18-3.09.92.94-3.01-.2-.31A8.18 8.18 0 1 1 12 20.18z"/></svg>
+</a>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top"><span class="footer-logo-placa"><img src="logo-rubinetti-horizontal.png" alt="Rubinetti Propiedades"></span></div>
+    <div class="footer-grid">
+      <div>
+        <h4>Rubinetti Propiedades</h4>
+        <p>Av. Rivadavia 3850<br>Mar del Plata, Argentina<br>Lunes a viernes de 9 a 18 h</p>
+      </div>
+      <div>
+        <h4>La inmobiliaria</h4>
+        <a href="index.html#inmobiliaria">Sobre Nosotros</a>
+        <a href="index.html#contacto">Contacto</a>
+        <a href="tasaciones.html">Tasaciones</a>
+      </div>
+      <div>
+        <h4>Propiedades</h4>
+        <a href="listado.html?operacion=venta">En venta</a>
+        <a href="listado.html?operacion=alquiler">En alquiler</a>
+        <a href="listado.html?operacion=venta&tipo=Departamento">Departamentos</a>
+        <a href="listado.html?operacion=venta&tipo=Casa">Casas</a>
+        <a href="listado.html?operacion=venta&tipo=PH">PH</a>
+        <a href="listado.html?operacion=venta&tipo=Lote">Lotes</a>
+      </div>
+      <div>
+        <h4>Contacto directo</h4>
+        <a href="https://wa.me/5492235456335" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="#">Instagram</a>
+        <a href="tel:+542235456335">+54 223 545-6335</a>
+        <a href="mailto:info@rubinettipropiedades.com.ar">Email</a>
+      </div>
+    </div>
+    <p class="footer-disclaimer">Las medidas, superficies y demás datos enunciados son meramente orientativos; las medidas exactas serán las que consten en el respectivo título de propiedad de cada inmueble. Todas las fotos e imágenes son ilustrativas y no contractuales. Los precios enunciados no son vinculantes y están sujetos a confirmación.</p>
+    <div class="footer-legal">
+      <span>© 2026 Rubinetti Propiedades · Corredores públicos Mat. XXXX</span>
+      <span>Mar del Plata, Argentina</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* =====================================================================
+   DEMO: en producción este submit crea un Lead con source=VALUATION_FORM,
+   sin propertyId (la propiedad todavía no existe en el sistema — es la
+   de un potencial vendedor), guardando dirección/barrio/tipo como texto
+   libre hasta que alguien del equipo la convierta en una Property real
+   si Rubinetti termina tomando la operación.
+   ===================================================================== */
+document.getElementById('form-tasacion').addEventListener('submit', function (e) {
+  e.preventDefault();
+  document.getElementById('form-contenido').style.display = 'none';
+  document.getElementById('form-confirmacion').classList.add('visible');
+});
+</script>
+
+</body>
+</html>
