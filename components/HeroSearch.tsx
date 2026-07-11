@@ -47,7 +47,7 @@ export default function HeroSearch() {
     <form
       onSubmit={handleSubmit}
       aria-label="Buscar propiedades"
-      className="w-full grid grid-cols-1 sm:grid-cols-2 lg:[grid-template-columns:auto_auto_1fr_auto] items-center"
+      className="buscador-form w-full items-center"
       style={{
         background: 'rgba(20,18,19,.55)',
         backdropFilter: 'blur(10px)',
@@ -55,7 +55,6 @@ export default function HeroSearch() {
         border: '1px solid rgba(255,255,255,.18)',
         borderRadius: '10px',
         padding: '16px 20px',
-        gap: '22px',
         boxShadow: '0 12px 36px rgba(0,0,0,.35)',
       }}
     >
@@ -90,7 +89,7 @@ export default function HeroSearch() {
       </div>
 
       {/* Ubicación */}
-      <div className="flex flex-col gap-1 col-span-1 sm:col-span-2 lg:col-span-1 buscador-ubicacion">
+      <div className="flex flex-col gap-1 buscador-ubicacion">
         <label htmlFor="q" style={labelStyle}>Ubicación</label>
         <input
           id="q"
@@ -116,7 +115,7 @@ export default function HeroSearch() {
       {/* Buscar */}
       <button
         type="submit"
-        className="col-span-1 sm:col-span-2 lg:col-span-1"
+        className="buscador-btn"
         style={{
           fontFamily: 'inherit',
           fontSize: '14px',
