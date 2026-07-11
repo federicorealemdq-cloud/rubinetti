@@ -27,6 +27,20 @@ export default function HomePage() {
           color: '#fff',
         }}
       >
+        {/* Foto de fondo — solo en mobile */}
+        <div
+          className="md:hidden"
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: 'url(https://commons.wikimedia.org/wiki/Special:FilePath/Vista%20de%20Mar%20del%20Plata%20desde%20la%20Torre%20Tanque.jpg?width=1920)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            pointerEvents: 'none',
+          }}
+        />
+
         {/* Video — oculto en mobile y reduced-motion */}
         <div
           className="max-md:hidden"

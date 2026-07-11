@@ -4,6 +4,7 @@ import { MapPin, Maximize2, BedDouble, Bath, Home, ChevronLeft, Phone } from 'lu
 import Gallery from '@/components/Gallery';
 import ContactForm from '@/components/ContactForm';
 import PropertyCard from '@/components/PropertyCard';
+import CtaFichaMovil from '@/components/CtaFichaMovil';
 import {
   properties,
   getPropertyImages,
@@ -209,6 +210,13 @@ export default async function PropiedadPage({ params }: { params: Promise<{ id: 
           </div>
         </section>
       )}
+
+      {/* CTA fija mobile: reemplaza al botón flotante de WhatsApp en pantallas chicas */}
+      <CtaFichaMovil
+        price={price}
+        isAlquiler={property.op === 'Alquiler'}
+        waLink={`https://wa.me/542235456335?text=${waMessage}`}
+      />
     </div>
   );
 }

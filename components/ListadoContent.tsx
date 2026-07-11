@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { SlidersHorizontal, X } from 'lucide-react';
 import PropertyCard from './PropertyCard';
@@ -34,6 +34,23 @@ export default function ListadoContent() {
   const [monedaFiltro, setMonedaFiltro] = useState<'USD' | 'ARS'>('USD');
   const [orden, setOrden] = useState('destacadas');
   const [pagina, setPagina] = useState(1);
+  const [filtrosAbiertos, setFiltrosAbiertos] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.toggle('filtros-abiertos', filtrosAbiertos);
+    return () => document.body.classList.remove('filtros-abiertos');
+  }, [filtrosAbiertos]);
+
+  useEffect(() => {
+    if (!filtrosAbiertos) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setFiltrosAbiertos(false); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [filtrosAbiertos]);
+
+  const cantFiltros =
+    filtrosTipo.size + filtrosAmbientes.size + filtrosAmenities.size +
+    (filtroBarrio ? 1 : 0) + (filtroEstado ? 1 : 0) + ((precioMin || precioMax) ? 1 : 0);
 
   const barrios = useMemo(
     () => [...new Set(properties.filter(p => p.op === operacion).map(p => p.barrio))].sort(),
@@ -124,6 +141,16 @@ export default function ListadoContent() {
 
   return (
     <div className="pt-32 pb-16 max-w-6xl mx-auto px-6">
+
+      {/* Backdrop filtros — mobile */}
+      <div
+        className={`fixed inset-0 z-[90] bg-[rgba(38,37,37,.5)] transition-opacity duration-[250ms] lg:hidden ${
+          filtrosAbiertos ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setFiltrosAbiertos(false)}
+        aria-hidden="true"
+      />
+
       {/* Breadcrumb */}
       <nav className="text-sm text-[#6f6a6d] mb-6">
         <span className="hover:text-[#8a4f70] cursor-pointer" onClick={() => router.push('/')}>Inicio</span>
@@ -132,9 +159,31 @@ export default function ListadoContent() {
       </nav>
 
       <div className="flex gap-8">
-        {/* Sidebar */}
-        <aside className="hidden lg:block w-64 flex-shrink-0">
-          <div className="sticky top-32 space-y-6">
+        {/* Sidebar — drawer en mobile, estático en desktop */}
+        <aside
+          className={[
+            'fixed left-0 top-0 bottom-0 z-[95] w-[min(320px,86vw)] overflow-y-auto',
+            'bg-[#faf9f8] shadow-xl px-6 pt-5 pb-8',
+            'transition-transform duration-300 ease-out',
+            filtrosAbiertos ? 'translate-x-0' : '-translate-x-full',
+            'lg:static lg:translate-x-0 lg:shadow-none lg:overflow-visible',
+            'lg:w-64 lg:flex-shrink-0 lg:p-0 lg:z-auto lg:bg-transparent',
+          ].join(' ')}
+          aria-label="Filtros"
+        >
+          {/* Cerrar drawer — solo mobile */}
+          <div className="flex justify-end mb-4 lg:hidden">
+            <button
+              onClick={() => setFiltrosAbiertos(false)}
+              className="w-[38px] h-[38px] rounded-full border flex items-center justify-center cursor-pointer transition-colors hover:border-[#aa6d8f] hover:text-[#aa6d8f]"
+              style={{ borderColor: 'rgba(38,37,37,.14)', background: '#fff', color: '#262525' }}
+              aria-label="Cerrar filtros"
+            >
+              <X size={17} />
+            </button>
+          </div>
+
+          <div className="lg:sticky lg:top-32 space-y-6">
             {/* Op toggle */}
             <div>
               <div className="flex rounded-lg border overflow-hidden" style={{ borderColor: 'rgba(38,37,37,.2)' }}>
@@ -259,13 +308,29 @@ export default function ListadoContent() {
 
         {/* Main */}
         <div className="flex-1 min-w-0">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6">
+          {/* Toolbar */}
+          <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
             <h1 className="text-lg font-semibold text-[#262525]">
               {resultado.length} {resultado.length === 1 ? 'propiedad' : 'propiedades'} en {operacion.toLowerCase()}
             </h1>
             <div className="flex items-center gap-2">
-              <SlidersHorizontal size={16} className="text-[#6f6a6d]" />
+              {/* Botón filtros — solo mobile */}
+              <button
+                onClick={() => setFiltrosAbiertos(true)}
+                className="lg:hidden flex items-center gap-2 px-4 py-1.5 rounded-full border text-sm font-semibold text-[#262525] bg-white hover:border-[#aa6d8f] transition-colors"
+                style={{ borderColor: 'rgba(38,37,37,.2)' }}
+                aria-expanded={filtrosAbiertos}
+                aria-label="Abrir filtros"
+              >
+                <SlidersHorizontal size={15} />
+                Filtros
+                {cantFiltros > 0 && (
+                  <span className="bg-[#aa6d8f] text-white text-[11px] font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1 leading-none">
+                    {cantFiltros}
+                  </span>
+                )}
+              </button>
+              <SlidersHorizontal size={16} className="text-[#6f6a6d] hidden lg:block" />
               <select
                 value={orden}
                 onChange={e => { setOrden(e.target.value); setPagina(1); }}

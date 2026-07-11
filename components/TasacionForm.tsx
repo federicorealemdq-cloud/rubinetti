@@ -31,7 +31,7 @@ export default function TasacionForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="block text-xs text-[#6f6a6d] mb-1">Nombre *</label>
           <input required type="text" name="nombre" className={inputClass} style={borderStyle} />
@@ -52,7 +52,7 @@ export default function TasacionForm() {
         <input required type="text" name="direccion" className={inputClass} style={borderStyle} />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="block text-xs text-[#6f6a6d] mb-1">Barrio</label>
           <input type="text" name="barrio" className={inputClass} style={borderStyle} />
@@ -84,7 +84,7 @@ export default function TasacionForm() {
         onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#6d3d58')}
         onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#8a4f70')}
       >
-        Solicitar tasación gratuita
+        Solicitar tasación
       </button>
 
       <div className="relative my-2">

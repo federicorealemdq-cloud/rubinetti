@@ -52,14 +52,14 @@ export default function Gallery({ images, title, videoId }: Props) {
         </div>
       </div>
 
-      {/* Thumbnails */}
+      {/* Thumbnails — scroll horizontal en mobile, grid en sm+ */}
       {images.length > 1 && (
-        <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+        <div className="flex overflow-x-auto snap-x snap-proximity gap-2 pb-1 sm:grid sm:grid-cols-8 sm:overflow-visible">
           {images.map((img, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
-              className={`relative aspect-square rounded-lg overflow-hidden ring-offset-1 transition-all ${
+              className={`relative flex-shrink-0 w-[76px] aspect-[4/3] snap-start sm:w-auto sm:aspect-square rounded-lg overflow-hidden ring-offset-1 transition-all ${
                 i === active ? 'ring-2 ring-[#8a4f70]' : 'opacity-70 hover:opacity-100'
               }`}
             >

@@ -291,3 +291,28 @@ a {
 body.menu-abierto {
   overflow: hidden;
 }
+
+body.filtros-abiertos {
+  overflow: hidden;
+}
+
+/* ── Ficha: barra CTA fija (solo mobile) ── */
+.cta-ficha-movil {
+  display: none;
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 70;
+  background: #fff;
+  border-top: 1px solid rgba(38,37,37,.14);
+  box-shadow: 0 -6px 20px rgba(38,37,37,.10);
+  padding: 12px 16px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+@media (max-width: 720px) {
+  .cta-ficha-movil { display: flex; }
+  body.en-ficha-page .whatsapp-flotante-global { display: none; }
+  body.en-ficha-page { padding-bottom: 78px; }
+}
