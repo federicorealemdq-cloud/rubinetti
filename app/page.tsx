@@ -133,7 +133,7 @@ export default function HomePage() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(2, minmax(200px, 260px))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 260px))',
               gap: '32px',
               justifyContent: 'center',
               marginBottom: '36px',

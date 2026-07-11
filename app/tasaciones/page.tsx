@@ -46,7 +46,7 @@ export default function TasacionesPage() {
   return (
     <>
       {/* Hero */}
-      <section style={{ backgroundColor: '#aa6d8f', color: '#fff', padding: '64px 0 56px' }}>
+      <section className="pt-[136px] max-[720px]:pt-[84px]" style={{ backgroundColor: '#aa6d8f', color: '#fff', paddingBottom: '56px' }}>
         <div className="max-w-[1140px] mx-auto px-6">
           <p style={{ fontSize: '12.5px', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.85)', marginBottom: '14px' }}>
             Tasaciones

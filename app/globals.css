@@ -25,6 +25,11 @@ h2 {
 html {
   scroll-behavior: smooth;
   scroll-snap-type: y proximity;
+  scroll-padding-top: 120px;
+}
+
+@media (max-width: 720px) {
+  html { scroll-padding-top: 72px; }
 }
 
 @media (max-height: 760px), (max-width: 900px), (pointer: coarse) {

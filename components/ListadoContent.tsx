@@ -37,6 +37,11 @@ export default function ListadoContent() {
   const [filtrosAbiertos, setFiltrosAbiertos] = useState(false);
 
   useEffect(() => {
+    const op = searchParams.get('operacion') as Operacion;
+    if (op && op !== operacion) setOperacion(op);
+  }, [searchParams]);
+
+  useEffect(() => {
     document.body.classList.toggle('filtros-abiertos', filtrosAbiertos);
     return () => document.body.classList.remove('filtros-abiertos');
   }, [filtrosAbiertos]);

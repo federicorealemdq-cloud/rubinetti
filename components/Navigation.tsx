@@ -22,22 +22,37 @@ export default function Navigation() {
     return pathname === href.split('?')[0];
   };
 
-  const abrir = () => setMenuAbierto(true);
-  const cerrar = () => setMenuAbierto(false);
+  const abrir = () => {
+    setMenuAbierto(true);
+    document.body.classList.add('menu-abierto');
+  };
+  const cerrar = () => {
+    setMenuAbierto(false);
+    document.body.classList.remove('menu-abierto');
+  };
 
-  useEffect(() => {
-    if (menuAbierto) {
-      document.body.classList.add('menu-abierto');
-    } else {
-      document.body.classList.remove('menu-abierto');
+  const manejarLinkDrawer = (href: string, e: React.MouseEvent) => {
+    cerrar();
+    if (href.startsWith('/#')) {
+      e.preventDefault();
+      const id = href.slice(2);
+      requestAnimationFrame(() => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const navEl = document.getElementById('nav') as HTMLElement;
+        const navH = navEl ? navEl.offsetHeight : 70;
+        window.scrollTo({ top: el.offsetTop - navH, behavior: 'smooth' });
+      });
     }
-    return () => document.body.classList.remove('menu-abierto');
-  }, [menuAbierto]);
+  };
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') cerrar(); };
     document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
+    return () => {
+      document.removeEventListener('keydown', handler);
+      document.body.classList.remove('menu-abierto');
+    };
   }, []);
 
   return (
@@ -177,7 +192,7 @@ export default function Navigation() {
         {/* Links */}
         <nav className="menu-mobile-links" role="navigation" aria-label="Principal (mobile)">
           {navLinks.map(link => (
-            <Link key={link.href} href={link.href} onClick={cerrar}>
+            <Link key={link.href} href={link.href} onClick={(e) => manejarLinkDrawer(link.href, e)}>
               {link.label}
             </Link>
           ))}
