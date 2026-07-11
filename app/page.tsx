@@ -2,6 +2,7 @@ import Link from 'next/link';
 import HeroSearch from '@/components/HeroSearch';
 import Carousel from '@/components/Carousel';
 import ContactForm from '@/components/ContactForm';
+import ScrollToHash from '@/components/ScrollToHash';
 import { properties } from '@/data/properties';
 
 const destacadas = properties.filter(p => p.destacada);
@@ -16,6 +17,7 @@ const wrap = {
 export default function HomePage() {
   return (
     <>
+      <ScrollToHash />
       {/* ── Hero ── */}
       <header
         className="pantalla hero-pantalla relative"

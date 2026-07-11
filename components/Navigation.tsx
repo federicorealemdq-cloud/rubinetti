@@ -31,19 +31,26 @@ export default function Navigation() {
     document.body.classList.remove('menu-abierto');
   };
 
+  const scrollToAnchor = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const manejarLinkDesktop = (href: string, e: React.MouseEvent) => {
+    if (!href.startsWith('/#')) return;
+    if (pathname === '/') {
+      e.preventDefault();
+      scrollToAnchor(href.slice(2));
+    }
+    // Si no estamos en home, <Link> navega a /#... y el browser + useEffect de la home hacen el scroll
+  };
+
   const manejarLinkDrawer = (href: string, e: React.MouseEvent) => {
     cerrar();
-    if (href.startsWith('/#')) {
+    if (href.startsWith('/#') && pathname === '/') {
       e.preventDefault();
-      const id = href.slice(2);
-      requestAnimationFrame(() => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        const navEl = document.getElementById('nav') as HTMLElement;
-        const navH = navEl ? navEl.offsetHeight : 70;
-        window.scrollTo({ top: el.offsetTop - navH, behavior: 'smooth' });
-      });
+      requestAnimationFrame(() => scrollToAnchor(href.slice(2)));
     }
+    // Si no estamos en home, <Link> navega a /#... normalmente
   };
 
   useEffect(() => {
@@ -152,6 +159,7 @@ export default function Navigation() {
                 <Link
                   href={link.href}
                   className={`nav-link-underline ${isActive(link.href) ? 'text-[#8a4f70]' : 'text-[#262525]'}`}
+                  onClick={(e) => manejarLinkDesktop(link.href, e)}
                 >
                   {link.label}
                 </Link>
