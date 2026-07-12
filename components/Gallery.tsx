@@ -1,7 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
-import { Camera, Play, X } from 'lucide-react';
+import { Camera, Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Props {
   images: string[];
@@ -12,6 +12,7 @@ interface Props {
 export default function Gallery({ images, title, videoId }: Props) {
   const [active, setActive] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
+  const touchStartX = useRef<number>(0);
 
   if (images.length === 0) {
     return (
@@ -22,10 +23,20 @@ export default function Gallery({ images, title, videoId }: Props) {
     );
   }
 
+  const prev = () => setActive(i => (i - 1 + images.length) % images.length);
+  const next = () => setActive(i => (i + 1) % images.length);
+
   return (
     <div className="space-y-3">
       {/* Main image */}
-      <div className="relative aspect-video rounded-xl overflow-hidden bg-[#f0ece8]">
+      <div
+        className="relative aspect-video rounded-xl overflow-hidden bg-[#f0ece8] select-none"
+        onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
+        onTouchEnd={e => {
+          const delta = touchStartX.current - e.changedTouches[0].clientX;
+          if (Math.abs(delta) > 40) delta > 0 ? next() : prev();
+        }}
+      >
         <Image
           src={images[active]}
           alt={`${title} - foto ${active + 1}`}
@@ -35,14 +46,35 @@ export default function Gallery({ images, title, videoId }: Props) {
           priority
         />
 
+        {/* Arrows — desktop only */}
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={prev}
+              className="absolute left-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center justify-center bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-colors z-10"
+              aria-label="Foto anterior"
+            >
+              <ChevronLeft size={22} />
+            </button>
+            <button
+              onClick={next}
+              className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center justify-center bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-colors z-10"
+              aria-label="Foto siguiente"
+            >
+              <ChevronRight size={22} />
+            </button>
+          </>
+        )}
+
+        {/* Video button */}
         {videoId && (
           <button
             onClick={() => setShowVideo(true)}
-            className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors group"
+            className="absolute bottom-10 right-3 z-10 flex items-center gap-1.5 bg-black/60 hover:bg-black/80 text-white text-xs font-medium px-3 py-1.5 rounded-full transition-colors"
+            aria-label="Ver video"
           >
-            <div className="bg-white/90 rounded-full p-4 group-hover:scale-110 transition-transform">
-              <Play size={28} className="text-[#8a4f70] fill-[#8a4f70] ml-1" />
-            </div>
+            <Play size={13} className="fill-white" />
+            Ver video
           </button>
         )}
 
@@ -52,7 +84,7 @@ export default function Gallery({ images, title, videoId }: Props) {
         </div>
       </div>
 
-      {/* Thumbnails — scroll horizontal en mobile, grid en sm+ */}
+      {/* Thumbnails */}
       {images.length > 1 && (
         <div className="flex overflow-x-auto snap-x snap-proximity gap-2 pb-1 sm:grid sm:grid-cols-8 sm:overflow-visible">
           {images.map((img, i) => (
