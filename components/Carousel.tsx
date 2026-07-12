@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import PropertyCard from './PropertyCard';
 import type { Property } from '@/data/properties';
@@ -13,6 +13,7 @@ export default function Carousel({ items }: { items: Property[] }) {
   const [perSlide, setPerSlide] = useState(3);
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const [animKey, setAnimKey] = useState(0);
+  const touchStartX = useRef<number>(0);
 
   useEffect(() => {
     const update = () => {
@@ -64,6 +65,14 @@ export default function Carousel({ items }: { items: Property[] }) {
         className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[22px] ${
           direction === 'next' ? 'carousel-slide-next' : 'carousel-slide-prev'
         }`}
+        onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
+        onTouchEnd={e => {
+          const delta = touchStartX.current - e.changedTouches[0].clientX;
+          if (Math.abs(delta) > 40) {
+            if (delta > 0 && slide < totalSlides - 1) goTo(slide + 1);
+            else if (delta < 0 && slide > 0) goTo(slide - 1);
+          }
+        }}
       >
         {visible.map(p => <PropertyCard key={p.id} property={p} />)}
       </div>
