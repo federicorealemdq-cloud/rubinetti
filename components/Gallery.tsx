@@ -17,7 +17,7 @@ export default function Gallery({ images, title, videoId }: Props) {
     ...(videoId ? [{ type: 'video' as const, videoId }] : []),
   ];
 
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(() => videoId ? images.length : 0);
   const [lightbox, setLightbox] = useState<number | null>(null);
   const touchStartX = useRef<number>(0);
   const lbTouchStartX = useRef<number>(0);
