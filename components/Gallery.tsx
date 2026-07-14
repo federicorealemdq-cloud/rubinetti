@@ -32,6 +32,12 @@ export default function Gallery({ images, title, videoId }: Props) {
 
   const closeLightbox = () => setLightbox(null);
 
+  // Auto-open video on mount (useEffect to avoid SSR hydration mismatch)
+  useEffect(() => {
+    if (videoId) setLightbox(images.length);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Keep thumbnail strip in sync when navigating inside lightbox
   useEffect(() => {
     if (lightbox !== null) setActive(lightbox);
@@ -75,12 +81,12 @@ export default function Gallery({ images, title, videoId }: Props) {
             if (Math.abs(delta) > 40) delta > 0 ? next() : prev();
           }}
         >
-          {current.type === 'photo' ? (
-            <button
-              className="absolute inset-0 w-full h-full cursor-zoom-in"
-              onClick={() => setLightbox(active)}
-              aria-label="Ver foto ampliada"
-            >
+          <button
+            className="absolute inset-0 w-full h-full cursor-zoom-in"
+            onClick={() => setLightbox(active)}
+            aria-label={current.type === 'photo' ? 'Ver foto ampliada' : 'Ver video'}
+          >
+            {current.type === 'photo' ? (
               <Image
                 src={current.src}
                 alt={`${title} - foto ${active + 1}`}
@@ -89,16 +95,23 @@ export default function Gallery({ images, title, videoId }: Props) {
                 unoptimized
                 priority={active === 0}
               />
-            </button>
-          ) : (
-            <iframe
-              key={current.videoId}
-              src={`https://www.youtube.com/embed/${current.videoId}`}
-              className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          )}
+            ) : (
+              <>
+                <Image
+                  src={`https://img.youtube.com/vi/${current.videoId}/maxresdefault.jpg`}
+                  alt="Video"
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                  <div className="bg-white/90 rounded-full p-5 shadow-lg">
+                    <Play size={36} className="fill-[#8a4f70] text-[#8a4f70] translate-x-0.5" />
+                  </div>
+                </div>
+              </>
+            )}
+          </button>
 
           {/* Arrows — desktop only */}
           {items.length > 1 && (
@@ -120,13 +133,11 @@ export default function Gallery({ images, title, videoId }: Props) {
             </>
           )}
 
-          {/* Counter — photos only */}
-          {current.type === 'photo' && (
-            <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded flex items-center gap-1 pointer-events-none">
-              <Camera size={12} />
-              {active + 1} / {items.length}
-            </div>
-          )}
+          {/* Counter */}
+          <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded flex items-center gap-1 pointer-events-none">
+            {current.type === 'photo' ? <Camera size={12} /> : <Play size={12} className="fill-white" />}
+            {active + 1} / {items.length}
+          </div>
         </div>
 
         {/* Thumbnails */}
@@ -167,7 +178,7 @@ export default function Gallery({ images, title, videoId }: Props) {
       {/* Lightbox */}
       {lightbox !== null && lbCurrent && (
         <div
-          className="fixed inset-0 z-50 bg-black/92 flex items-center justify-center"
+          className="fixed inset-0 z-[200] bg-black/92 flex items-center justify-center"
           onClick={closeLightbox}
           onTouchStart={e => { lbTouchStartX.current = e.touches[0].clientX; }}
           onTouchEnd={e => {
@@ -178,30 +189,30 @@ export default function Gallery({ images, title, videoId }: Props) {
           {/* Close */}
           <button
             onClick={closeLightbox}
-            className="absolute top-4 right-4 z-10 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors"
+            className="fixed top-4 right-4 z-[201] text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors"
             aria-label="Cerrar"
           >
             <X size={24} />
           </button>
 
           {/* Counter */}
-          <span className="absolute top-5 left-5 z-10 text-white/60 text-sm tabular-nums">
+          <span className="fixed top-5 left-5 z-[201] text-white/60 text-sm tabular-nums pointer-events-none">
             {lightbox + 1} / {items.length}
           </span>
 
           {/* Arrows */}
-          {items.length > 1 && (
+          {items.length > 1 && lbCurrent.type !== 'video' && (
             <>
               <button
                 onClick={e => { e.stopPropagation(); lbPrev(); }}
-                className="absolute left-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center bg-white/10 hover:bg-white/25 text-white rounded-full p-3 transition-colors"
+                className="fixed left-3 top-1/2 -translate-y-1/2 z-[201] flex items-center justify-center bg-white/10 hover:bg-white/25 text-white rounded-full p-3 transition-colors"
                 aria-label="Anterior"
               >
                 <ChevronLeft size={26} />
               </button>
               <button
                 onClick={e => { e.stopPropagation(); lbNext(); }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center bg-white/10 hover:bg-white/25 text-white rounded-full p-3 transition-colors"
+                className="fixed right-3 top-1/2 -translate-y-1/2 z-[201] flex items-center justify-center bg-white/10 hover:bg-white/25 text-white rounded-full p-3 transition-colors"
                 aria-label="Siguiente"
               >
                 <ChevronRight size={26} />
